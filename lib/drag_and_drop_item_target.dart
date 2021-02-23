@@ -6,12 +6,14 @@ import 'package:flutter/widgets.dart';
 
 class DragAndDropItemTarget extends StatefulWidget {
   final Widget child;
+  final bool isSideways;
   final DragAndDropListInterface parent;
   final DragAndDropBuilderParameters parameters;
   final OnItemDropOnLastTarget onReorderOrAdd;
 
   DragAndDropItemTarget(
       {@required this.child,
+      this.isSideways = false,
       @required this.onReorderOrAdd,
       @required this.parameters,
       this.parent,
@@ -30,7 +32,29 @@ class _DragAndDropItemTarget extends State<DragAndDropItemTarget>
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        Column(
+        if (widget.isSideways) Row(
+          // crossAxisAlignment: widget.parameters.verticalAlignment,
+          children: <Widget>[
+            AnimatedSize(
+              duration: Duration(
+                  milliseconds: widget.parameters.itemSizeAnimationDuration),
+              vsync: this,
+              alignment: Alignment.centerRight,
+              child: _hoveredDraggable != null
+                  ? Opacity(
+                      opacity: widget.parameters.itemGhostOpacity,
+                      child: widget.parameters.itemGhost ??
+                          _hoveredDraggable.child,
+                    )
+                  : Container(),
+            ),
+            widget.child ??
+                Container(
+                  height: 20,
+                ),
+          ],
+        ), 
+        if (!widget.isSideways) Column(
           crossAxisAlignment: widget.parameters.verticalAlignment,
           children: <Widget>[
             AnimatedSize(

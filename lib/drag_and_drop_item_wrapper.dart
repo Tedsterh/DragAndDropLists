@@ -8,10 +8,11 @@ import 'package:flutter/widgets.dart';
 
 class DragAndDropItemWrapper extends StatefulWidget {
   final DragAndDropItem child;
+  final bool isSideways;
   final DragAndDropBuilderParameters parameters;
 
   DragAndDropItemWrapper(
-      {@required this.child, @required this.parameters, Key key})
+      {@required this.child, @required this.parameters, this.isSideways = false, Key key})
       : super(key: key);
 
   @override
@@ -180,31 +181,57 @@ class _DragAndDropItemWrapper extends State<DragAndDropItemWrapper>
     }
     return Stack(
       children: <Widget>[
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: widget.parameters.verticalAlignment,
-          children: <Widget>[
-            AnimatedSize(
-              duration: Duration(
-                  milliseconds: widget.parameters.itemSizeAnimationDuration),
-              vsync: this,
-              alignment: Alignment.topLeft,
-              child: _hoveredDraggable != null
-                  ? Opacity(
-                      opacity: widget.parameters.itemGhostOpacity,
-                      child: widget.parameters.itemGhost ??
-                          _hoveredDraggable.child,
-                    )
-                  : Container(),
-            ),
-            Listener(
-              child: draggable,
-              onPointerMove: _onPointerMove,
-              onPointerDown: widget.parameters.onPointerDown,
-              onPointerUp: widget.parameters.onPointerUp,
-            ),
-          ],
-        ),
+        if (widget.isSideways)
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: widget.parameters.verticalAlignment,
+            children: <Widget>[
+              AnimatedSize(
+                duration: Duration(
+                    milliseconds: widget.parameters.itemSizeAnimationDuration),
+                vsync: this,
+                alignment: Alignment.topLeft,
+                child: _hoveredDraggable != null
+                    ? Opacity(
+                        opacity: widget.parameters.itemGhostOpacity,
+                        child: widget.parameters.itemGhost ??
+                            _hoveredDraggable.child,
+                      )
+                    : Container(),
+              ),
+              Listener(
+                child: draggable,
+                onPointerMove: _onPointerMove,
+                onPointerDown: widget.parameters.onPointerDown,
+                onPointerUp: widget.parameters.onPointerUp,
+              ),
+            ],
+          ),
+        if (!widget.isSideways) Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: widget.parameters.verticalAlignment,
+            children: <Widget>[
+              AnimatedSize(
+                duration: Duration(
+                    milliseconds: widget.parameters.itemSizeAnimationDuration),
+                vsync: this,
+                alignment: Alignment.topLeft,
+                child: _hoveredDraggable != null
+                    ? Opacity(
+                        opacity: widget.parameters.itemGhostOpacity,
+                        child: widget.parameters.itemGhost ??
+                            _hoveredDraggable.child,
+                      )
+                    : Container(),
+              ),
+              Listener(
+                child: draggable,
+                onPointerMove: _onPointerMove,
+                onPointerDown: widget.parameters.onPointerDown,
+                onPointerUp: widget.parameters.onPointerUp,
+              ),
+            ],
+          ),
         Positioned.fill(
           child: DragTarget<DragAndDropItem>(
             builder: (context, candidateData, rejectedData) {

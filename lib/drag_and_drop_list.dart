@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:drag_and_drop_lists/drag_and_drop_builder_parameters.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_item.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_item_target.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_item_wrapper.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_list_interface.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 class DragAndDropList implements DragAndDropListInterface {
@@ -49,6 +52,12 @@ class DragAndDropList implements DragAndDropListInterface {
   /// Set to true if it can be reordered.
   /// Set to false if it must remain fixed.
   final bool canDrag;
+
+  ScrollController _scrollController = ScrollController();
+  bool _pointerRight = false;
+  double _pointerYPosition;
+  double _pointerXPosition;
+  bool _scrolling = false;
 
   DragAndDropList(
       {List<DragAndDropItem> children,
@@ -148,6 +157,7 @@ class DragAndDropList implements DragAndDropListInterface {
       }
       for (int i = 0; i < children.length; i++) {
         allChildren.add(DragAndDropItemWrapper(
+          isSideways: isSideways,
           child: children[i],
           parameters: params,
         ));
@@ -156,6 +166,7 @@ class DragAndDropList implements DragAndDropListInterface {
         }
       }
       allChildren.add(DragAndDropItemTarget(
+        isSideways: isSideways,
         parent: this,
         parameters: params,
         onReorderOrAdd: params.onItemDropOnLastTarget,
@@ -167,15 +178,25 @@ class DragAndDropList implements DragAndDropListInterface {
       if (isSideways) {
         contents.add(
           Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              physics: ClampingScrollPhysics(),
-              clipBehavior: Clip.none,
-              child: Row(
-                crossAxisAlignment: verticalAlignment,
-                mainAxisSize: MainAxisSize.min,
-                children: allChildren,
-              ),
+            child: Builder(
+              builder: (context) {
+                return Listener(
+                  onPointerMove: (event) => _onPointerMove(event, context),
+                  onPointerDown: _onPointerRight,
+                  onPointerUp: _onPointerLeft,
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    scrollDirection: Axis.horizontal,
+                    physics: ClampingScrollPhysics(),
+                    clipBehavior: Clip.none,
+                    child: Row(
+                      crossAxisAlignment: verticalAlignment,
+                      mainAxisSize: MainAxisSize.min,
+                      children: allChildren,
+                    ),
+                  ),
+                );
+              }
             ),
           ),
         );
@@ -210,6 +231,7 @@ class DragAndDropList implements DragAndDropListInterface {
                       ),
                     ),
                 DragAndDropItemTarget(
+                  isSideways: isSideways,
                   parent: this,
                   parameters: params,
                   onReorderOrAdd: params.onItemDropOnLastTarget,
@@ -228,5 +250,84 @@ class DragAndDropList implements DragAndDropListInterface {
       contents.add(rightSide);
     }
     return contents;
+  }
+
+  _onPointerMove(PointerMoveEvent event, context) {
+    if (_pointerRight) {
+      _pointerYPosition = event.position.dy;
+      _pointerXPosition = event.position.dx;
+
+      _scrollList(context);
+    }
+  }
+
+  _onPointerRight(PointerDownEvent event) {
+    _pointerRight = true;
+    _pointerYPosition = event.position.dy;
+    _pointerXPosition = event.position.dx;
+  }
+
+  _onPointerLeft(PointerUpEvent event) {
+    _pointerRight = false;
+  }
+
+  _scrollList(context) async {
+    if (_scrollController != null) {
+      if (!_scrolling &&
+          _pointerRight &&
+          _pointerYPosition != null &&
+          _pointerXPosition != null) {
+        int duration = 30; // in ms
+        int scrollAreaSize = 20;
+        double step = 1.5;
+        double overDragMax = 20.0;
+        double overDragCoefficient = 5.0;
+        double newOffset;
+
+        var rb = context.findRenderObject();
+        Size size;
+        if (rb is RenderBox)
+          size = rb.size;
+        else if (rb is RenderSliver) size = rb.paintBounds.size;
+        var topLeftOffset = localToGlobal(rb, Offset.zero);
+        var bottomRightOffset = localToGlobal(rb, size.bottomRight(Offset.zero));
+
+        double left = topLeftOffset.dx;
+        double right = bottomRightOffset.dx;
+
+        if (_pointerXPosition < (left + scrollAreaSize) &&
+            _scrollController.position.pixels >
+                _scrollController.position.minScrollExtent) {
+          final overDrag =
+              max((left + scrollAreaSize) - _pointerXPosition, overDragMax);
+          newOffset = max(
+              _scrollController.position.minScrollExtent,
+              _scrollController.position.pixels -
+                  step * overDrag / overDragCoefficient);
+        } else if (_pointerXPosition > (right - scrollAreaSize) &&
+            _scrollController.position.pixels <
+                _scrollController.position.maxScrollExtent) {
+          final overDrag = max<double>(
+              _pointerYPosition - (right - scrollAreaSize), overDragMax);
+          newOffset = min(
+              _scrollController.position.maxScrollExtent,
+              _scrollController.position.pixels +
+                  step * overDrag / overDragCoefficient);
+        }
+
+        if (newOffset != null) {
+          _scrolling = true;
+          await _scrollController.animateTo(newOffset,
+              duration: Duration(milliseconds: duration), curve: Curves.linear);
+          _scrolling = false;
+          if (_pointerRight) _scrollList(context);
+        }
+      }
+    }
+  }
+
+  static Offset localToGlobal(RenderObject object, Offset point,
+      {RenderObject ancestor}) {
+    return MatrixUtils.transformPoint(object.getTransformTo(ancestor), point);
   }
 }
