@@ -170,6 +170,7 @@ class DragAndDropList implements DragAndDropListInterface {
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               physics: ClampingScrollPhysics(),
+              clipBehavior: Clip.none,
               child: Row(
                 crossAxisAlignment: verticalAlignment,
                 mainAxisSize: MainAxisSize.min,
@@ -183,6 +184,7 @@ class DragAndDropList implements DragAndDropListInterface {
           Expanded(
             child: SingleChildScrollView(
               physics: NeverScrollableScrollPhysics(),
+              clipBehavior: Clip.none,
               child: Column(
                 crossAxisAlignment: verticalAlignment,
                 mainAxisSize: MainAxisSize.max,
