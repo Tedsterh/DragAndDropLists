@@ -1,9 +1,10 @@
-import 'package:drag_and_drop_lists/drag_and_drop_builder_parameters.dart';
-import 'package:drag_and_drop_lists/drag_and_drop_list_interface.dart';
-import 'package:drag_and_drop_lists/measure_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+
+import 'package:drag_and_drop_lists/drag_and_drop_builder_parameters.dart';
+import 'package:drag_and_drop_lists/drag_and_drop_list_interface.dart';
+import 'package:drag_and_drop_lists/measure_size.dart';
 
 class DragAndDropListWrapper extends StatefulWidget {
   final DragAndDropListInterface dragAndDropList;
@@ -64,7 +65,7 @@ class _DragAndDropListWrapper extends State<DragAndDropListWrapper>
                 top: _dragHandleDistanceFromTop(),
                 child: Draggable<DragAndDropListInterface>(
                   data: widget.dragAndDropList,
-                  axis: draggableAxis(),
+                  // axis: draggableAxis(),
                   child: MeasureSize(
                     onSizeChange: (size) {
                       setState(() {
@@ -90,7 +91,7 @@ class _DragAndDropListWrapper extends State<DragAndDropListWrapper>
       } else if (widget.parameters.dragOnLongPress) {
         draggable = LongPressDraggable<DragAndDropListInterface>(
           data: widget.dragAndDropList,
-          axis: draggableAxis(),
+          // axis: draggableAxis(),
           child: dragAndDropListContents,
           feedback:
               buildFeedbackWithoutHandle(context, dragAndDropListContents),
@@ -103,7 +104,7 @@ class _DragAndDropListWrapper extends State<DragAndDropListWrapper>
       } else {
         draggable = Draggable<DragAndDropListInterface>(
           data: widget.dragAndDropList,
-          axis: draggableAxis(),
+          // axis: draggableAxis(),
           child: dragAndDropListContents,
           feedback:
               buildFeedbackWithoutHandle(context, dragAndDropListContents),

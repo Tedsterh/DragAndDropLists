@@ -10,6 +10,8 @@ class DragAndDropList implements DragAndDropListInterface {
   /// The widget that is displayed at the top of the list.
   final Widget header;
 
+  final bool isSideways;
+
   /// The widget that is displayed at the bottom of the list.
   final Widget footer;
 
@@ -57,6 +59,7 @@ class DragAndDropList implements DragAndDropListInterface {
       this.contentsWhenEmpty,
       this.lastTarget,
       this.decoration,
+      this.isSideways = false,
       this.horizontalAlignment = MainAxisAlignment.start,
       this.verticalAlignment = CrossAxisAlignment.start,
       this.canDrag = true}) {
@@ -79,6 +82,12 @@ class DragAndDropList implements DragAndDropListInterface {
         children: _generateDragAndDropListInnerContents(params),
       ),
     );
+    if (isSideways) {
+      intrinsicHeight = Container(
+        width: params.listWidth,
+        child: intrinsicHeight,
+      );
+    }
     if (params.axis == Axis.horizontal) {
       intrinsicHeight = Container(
         width: params.listWidth,
@@ -97,6 +106,20 @@ class DragAndDropList implements DragAndDropListInterface {
       contents.add(Flexible(child: footer));
     }
 
+    if (isSideways) {
+      // return Container(
+      //   width: 300,
+      //   decoration: decoration ?? params.listDecoration,
+      //   height: 80,
+      //   child: Row(
+      //     mainAxisSize: MainAxisSize.min,
+      //     crossAxisAlignment: verticalAlignment,
+      //     children: [
+      //       ListTile(),
+      //     ],
+      //   ),
+      // );
+    }
     return Container(
       width: params.axis == Axis.vertical
           ? double.infinity
@@ -141,18 +164,34 @@ class DragAndDropList implements DragAndDropListInterface {
               height: params.lastItemTargetHeight,
             ),
       ));
-      contents.add(
-        Expanded(
-          child: SingleChildScrollView(
-            physics: NeverScrollableScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: verticalAlignment,
-              mainAxisSize: MainAxisSize.max,
-              children: allChildren,
+      if (isSideways) {
+        contents.add(
+          Expanded(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              physics: ClampingScrollPhysics(),
+              child: Row(
+                crossAxisAlignment: verticalAlignment,
+                mainAxisSize: MainAxisSize.min,
+                children: allChildren,
+              ),
             ),
           ),
-        ),
-      );
+        );
+      } else {
+        contents.add(
+          Expanded(
+            child: SingleChildScrollView(
+              physics: NeverScrollableScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: verticalAlignment,
+                mainAxisSize: MainAxisSize.max,
+                children: allChildren,
+              ),
+            ),
+          ),
+        );
+      }
     } else {
       contents.add(
         Expanded(

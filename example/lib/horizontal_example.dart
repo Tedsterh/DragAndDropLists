@@ -40,26 +40,26 @@ class _HorizontalExample extends State<HorizontalExample> {
         title: Text('Horizontal'),
       ),
       drawer: NavigationDrawer(),
-      body: DragAndDropLists(
-        children: List.generate(_lists.length, (index) => _buildList(index)),
-        onItemReorder: _onItemReorder,
-        onListReorder: _onListReorder,
-        axis: Axis.horizontal,
-        listWidth: 150,
-        listDraggingWidth: 150,
-        listDecoration: BoxDecoration(
-          color: Colors.grey[200],
-          borderRadius: BorderRadius.all(Radius.circular(7.0)),
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-              color: Colors.black45,
-              spreadRadius: 3.0,
-              blurRadius: 6.0,
-              offset: Offset(2, 3),
-            ),
-          ],
+      body: Container(
+        child: DragAndDropLists(
+          children: List.generate(_lists.length, (index) => _buildList(index)),
+          onItemReorder: _onItemReorder,
+          listWidth: 400,
+          onListReorder: _onListReorder,
+          listDecoration: BoxDecoration(
+            color: Colors.grey[200],
+            borderRadius: BorderRadius.all(Radius.circular(7.0)),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                color: Colors.black45,
+                spreadRadius: 3.0,
+                blurRadius: 6.0,
+                offset: Offset(2, 3),
+              ),
+            ],
+          ),
+          listPadding: EdgeInsets.all(8.0),
         ),
-        listPadding: EdgeInsets.all(8.0),
       ),
     );
   }
@@ -67,6 +67,7 @@ class _HorizontalExample extends State<HorizontalExample> {
   _buildList(int outerIndex) {
     var innerList = _lists[outerIndex];
     return DragAndDropList(
+      isSideways: outerIndex == 0 || outerIndex == 2 ? true : false,
       header: Row(
         children: <Widget>[
           Expanded(
@@ -119,8 +120,12 @@ class _HorizontalExample extends State<HorizontalExample> {
 
   _buildItem(String item) {
     return DragAndDropItem(
-      child: ListTile(
-        title: Text(item),
+      child: Container(
+        width: 50,
+        height: 50,
+        child: ListTile(
+          title: Text(item),
+        ),
       ),
     );
   }

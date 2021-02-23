@@ -68,10 +68,10 @@ class _DragAndDropItemWrapper extends State<DragAndDropItemWrapper>
             cursor: SystemMouseCursors.grab,
             child: Draggable<DragAndDropItem>(
               data: widget.child,
-              axis: widget.parameters.axis == Axis.vertical &&
-                      widget.parameters.constrainDraggingAxis
-                  ? Axis.vertical
-                  : null,
+              // axis: widget.parameters.axis == Axis.vertical &&
+              //         widget.parameters.constrainDraggingAxis
+              //     ? Axis.vertical
+              //     : null,
               child: MeasureSize(
                 onSizeChange: (size) {
                   setState(() {
@@ -117,10 +117,10 @@ class _DragAndDropItemWrapper extends State<DragAndDropItemWrapper>
           onSizeChange: _setContainerSize,
           child: LongPressDraggable<DragAndDropItem>(
             data: widget.child,
-            axis: widget.parameters.axis == Axis.vertical &&
-                    widget.parameters.constrainDraggingAxis
-                ? Axis.vertical
-                : null,
+            // axis: widget.parameters.axis == Axis.vertical &&
+            //         widget.parameters.constrainDraggingAxis
+            //     ? Axis.vertical
+            //     : null,
             child: widget.child.child,
             feedback: Container(
               width:
@@ -145,10 +145,10 @@ class _DragAndDropItemWrapper extends State<DragAndDropItemWrapper>
           onSizeChange: _setContainerSize,
           child: Draggable<DragAndDropItem>(
             data: widget.child,
-            axis: widget.parameters.axis == Axis.vertical &&
-                    widget.parameters.constrainDraggingAxis
-                ? Axis.vertical
-                : null,
+            // axis: widget.parameters.axis == Axis.vertical &&
+            //         widget.parameters.constrainDraggingAxis
+            //     ? Axis.vertical
+            //     : null,
             child: widget.child.child,
             feedback: Container(
               width:
