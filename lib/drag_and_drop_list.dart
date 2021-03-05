@@ -46,12 +46,16 @@ class DragAndDropList implements DragAndDropListInterface {
 
   /// The child elements that will be contained in this list.
   /// It is possible to not provide any children when an empty list is desired.
-  final List<DragAndDropItem> children = List<DragAndDropItem>();
+  final List<DragAndDropItem> children = <DragAndDropItem>[];
 
   /// Whether or not this item can be dragged.
   /// Set to true if it can be reordered.
   /// Set to false if it must remain fixed.
   final bool canDrag;
+
+  final bool isSmallWidget;
+
+  final bool isLargeWidget;
 
   ScrollController _scrollController = ScrollController();
   bool _pointerRight = false;
@@ -71,7 +75,9 @@ class DragAndDropList implements DragAndDropListInterface {
       this.isSideways = false,
       this.horizontalAlignment = MainAxisAlignment.start,
       this.verticalAlignment = CrossAxisAlignment.start,
-      this.canDrag = true}) {
+      this.canDrag = true,
+      this.isSmallWidget = false,
+      this.isLargeWidget = false}) {
     if (children != null) {
       children.forEach((element) => this.children.add(element));
     }
@@ -79,7 +85,7 @@ class DragAndDropList implements DragAndDropListInterface {
 
   @override
   Widget generateWidget(DragAndDropBuilderParameters params) {
-    var contents = List<Widget>();
+    var contents = <Widget>[];
     if (header != null) {
       contents.add(Flexible(child: header));
     }
@@ -144,12 +150,12 @@ class DragAndDropList implements DragAndDropListInterface {
 
   List<Widget> _generateDragAndDropListInnerContents(
       DragAndDropBuilderParameters params) {
-    var contents = List<Widget>();
+    var contents = <Widget>[];
     if (leftSide != null) {
       contents.add(leftSide);
     }
     if (children != null && children.isNotEmpty) {
-      List<Widget> allChildren = List<Widget>();
+      List<Widget> allChildren = <Widget>[];
       if (params.addLastItemTargetHeightToTop) {
         allChildren.add(Padding(
           padding: EdgeInsets.only(top: params.lastItemTargetHeight),
@@ -168,7 +174,9 @@ class DragAndDropList implements DragAndDropListInterface {
       allChildren.add(DragAndDropItemTarget(
         isSideways: isSideways,
         parent: this,
+        isLargeWidget: isLargeWidget,
         parameters: params,
+        isSmallWidget: isSmallWidget,
         onReorderOrAdd: params.onItemDropOnLastTarget,
         child: lastTarget ??
             Container(
@@ -232,6 +240,8 @@ class DragAndDropList implements DragAndDropListInterface {
                     ),
                 DragAndDropItemTarget(
                   isSideways: isSideways,
+                  isSmallWidget: isSmallWidget,
+                  isLargeWidget: isLargeWidget,
                   parent: this,
                   parameters: params,
                   onReorderOrAdd: params.onItemDropOnLastTarget,

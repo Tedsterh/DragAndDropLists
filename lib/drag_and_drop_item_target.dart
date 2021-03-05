@@ -7,6 +7,8 @@ import 'package:flutter/widgets.dart';
 class DragAndDropItemTarget extends StatefulWidget {
   final Widget child;
   final bool isSideways;
+  final bool isSmallWidget;
+  final bool isLargeWidget;
   final DragAndDropListInterface parent;
   final DragAndDropBuilderParameters parameters;
   final OnItemDropOnLastTarget onReorderOrAdd;
@@ -16,6 +18,8 @@ class DragAndDropItemTarget extends StatefulWidget {
       this.isSideways = false,
       @required this.onReorderOrAdd,
       @required this.parameters,
+      @required this.isSmallWidget,
+      @required this.isLargeWidget,
       this.parent,
       Key key})
       : super(key: key);
@@ -50,7 +54,7 @@ class _DragAndDropItemTarget extends State<DragAndDropItemTarget>
             ),
             widget.child ??
                 Container(
-                  height: 20,
+                  width: 20,
                 ),
           ],
         ), 

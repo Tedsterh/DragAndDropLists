@@ -35,6 +35,10 @@ class DragAndDropListExpansion implements DragAndDropListExpansionInterface {
   /// Set to false if it must remain fixed.
   final bool canDrag;
 
+  final bool isSmallWidget;
+
+  final bool isLargeWidget;
+
   /// Disable to borders displayed at the top and bottom when expanded
   final bool disableTopAndBottomBorders;
 
@@ -56,6 +60,8 @@ class DragAndDropListExpansion implements DragAndDropListExpansionInterface {
     this.listKey,
     this.canDrag = true,
     this.disableTopAndBottomBorders = false,
+    this.isSmallWidget = false,
+    this.isLargeWidget = false,
   }) : assert(listKey != null) {
     _expanded.value = initiallyExpanded;
   }
@@ -142,6 +148,8 @@ class DragAndDropListExpansion implements DragAndDropListExpansionInterface {
       }
       contents.add(DragAndDropItemTarget(
         parent: this,
+        isSmallWidget: isSmallWidget,
+        isLargeWidget: isLargeWidget,
         parameters: params,
         onReorderOrAdd: params.onItemDropOnLastTarget,
         child: lastTarget ??
@@ -163,6 +171,8 @@ class DragAndDropListExpansion implements DragAndDropListExpansionInterface {
         DragAndDropItemTarget(
           parent: this,
           parameters: params,
+          isSmallWidget: isSmallWidget,
+          isLargeWidget: isLargeWidget,
           onReorderOrAdd: params.onItemDropOnLastTarget,
           child: lastTarget ??
               Container(

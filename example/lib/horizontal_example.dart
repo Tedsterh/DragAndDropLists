@@ -67,7 +67,7 @@ class _HorizontalExample extends State<HorizontalExample> {
   _buildList(int outerIndex) {
     var innerList = _lists[outerIndex];
     return DragAndDropList(
-      isSideways: outerIndex == 0 || outerIndex == 2 ? true : false,
+      isSideways: true,
       header: Row(
         children: <Widget>[
           Expanded(
