@@ -13,5 +13,7 @@ class DragAndDropItem implements DragAndDropInterface {
   
   final bool isSmallWidget;
 
-  DragAndDropItem({@required this.child, this.canDrag = true, this.isSmallWidget = false});
+  final bool isLargeWidget;
+
+  DragAndDropItem({@required this.child, this.canDrag = true, this.isSmallWidget = false, this.isLargeWidget = false});
 }
