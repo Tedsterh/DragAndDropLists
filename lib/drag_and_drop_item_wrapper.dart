@@ -176,7 +176,7 @@ class _DragAndDropItemWrapper extends State<DragAndDropItemWrapper>
             Duration(milliseconds: widget.parameters.itemSizeAnimationDuration),
         vsync: this,
         alignment: Alignment.bottomCenter,
-        child: _hoveredDraggable != null ? Container() : widget.child.child,
+        child: _hoveredDraggable != null ? Container() : widget.child?.child ?? Container(),
       );
     }
     return Stack(
