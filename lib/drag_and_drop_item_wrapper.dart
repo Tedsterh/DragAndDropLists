@@ -30,7 +30,7 @@ class _DragAndDropItemWrapper extends State<DragAndDropItemWrapper>
   @override
   Widget build(BuildContext context) {
     Widget draggable;
-    if (widget.child.canDrag) {
+    if (widget?.child?.canDrag ?? false) {
       if (widget.parameters.dragHandle != null) {
         Widget feedback = Container(
           width: widget.parameters.itemDraggingWidth ?? _containerSize.width,
