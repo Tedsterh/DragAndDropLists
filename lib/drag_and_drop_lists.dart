@@ -374,7 +374,6 @@ class DragAndDropLists extends StatefulWidget {
 }
 
 class DragAndDropListsState extends State<DragAndDropLists> {
-  ScrollController _scrollController;
   bool _pointerDown = false;
   double _pointerYPosition;
   double _pointerXPosition;
@@ -382,14 +381,20 @@ class DragAndDropListsState extends State<DragAndDropLists> {
 
   PageStorageBucket _pageStorageBucket;
 
+  // Main Controllers
+  PageController _pageController;
+  ScrollController _mainScrollController;
+
   @override
   void initState() {
-    if (widget.scrollController != null)
-      _scrollController = widget.scrollController;
-    else
-      _scrollController = ScrollController();
 
     _pageStorageBucket = PageStorageBucket();
+
+    if (widget.pages) {
+      _pageController = PageController();
+    } else {
+      _mainScrollController = ScrollController();
+    }
 
     super.initState();
   }
@@ -397,7 +402,6 @@ class DragAndDropListsState extends State<DragAndDropLists> {
   @override
   Widget build(BuildContext context) {
     var parameters = DragAndDropBuilderParameters(
-      listController: _scrollController,
       listGhost: widget.listGhost,
       listGhostOpacity: widget.listGhostOpacity,
       listDraggingWidth: widget.listDraggingWidth,
@@ -441,6 +445,7 @@ class DragAndDropListsState extends State<DragAndDropLists> {
 
     if (widget.pages) {
       return PageView.builder(
+        controller: _pageController,
         itemCount: widget.children.length,
         itemBuilder: (context, index) {
           return DragAndDropPageWrapper(
@@ -452,6 +457,7 @@ class DragAndDropListsState extends State<DragAndDropLists> {
     } else {
       return ListView.builder(
         scrollDirection: Axis.horizontal,
+        controller: _mainScrollController,
         itemCount: widget.children.length,
         itemBuilder: (context, index) {
           return Container(
@@ -643,7 +649,7 @@ class DragAndDropListsState extends State<DragAndDropLists> {
 
         if (receiverItemIndex == -1 && widget.children[reorderedPageIndex].children[i] == parentList) {
           receiverListIndex = i;
-          receiverItemIndex = widget.children[i].children?.length ?? -1;
+          receiverItemIndex = widget.children[reorderedPageIndex].children[i].children?.length ?? -1;
         }
 
         if (reorderedItemIndex != -1 && receiverItemIndex != -1) {
@@ -671,7 +677,7 @@ class DragAndDropListsState extends State<DragAndDropLists> {
       DragAndDropListInterface newOrReordered, DragAndDropListTarget receiver) {
 
     int reorderedPageIndex = widget.children.indexWhere((e) => e.children.contains(newOrReordered));
-    int receiverPageIndex = widget.children.indexWhere((e) => e.children.contains(receiver));
+    int receiverPageIndex = widget.children.indexWhere((e) => e.children.contains(newOrReordered));
     // determine if newOrReordered is new or existing
     int reorderedListIndex = widget.children[reorderedPageIndex].children.indexWhere((e) => newOrReordered == e);
 
@@ -680,7 +686,7 @@ class DragAndDropListsState extends State<DragAndDropLists> {
 
     if (reorderedListIndex >= 0) {
       if (widget.onListReorder != null)
-        widget.onListReorder(reorderedListIndex, reorderedPageIndex, widget.children.length - 1, receiverPageIndex);
+        widget.onListReorder(reorderedListIndex, reorderedPageIndex, widget.children[reorderedPageIndex].children.length - 1, receiverPageIndex);
     } else {
       if (widget.onListAdd != null)
         widget.onListAdd(newOrReordered, reorderedListIndex, receiverPageIndex);
@@ -719,6 +725,8 @@ class DragAndDropListsState extends State<DragAndDropLists> {
       double overDragCoefficient = 5.0;
       double newOffset;
 
+      bool moveRight;
+
       var rb = context.findRenderObject();
       Size size;
       if (rb is RenderBox)
@@ -727,60 +735,53 @@ class DragAndDropListsState extends State<DragAndDropLists> {
       var topLeftOffset = localToGlobal(rb, Offset.zero);
       var bottomRightOffset = localToGlobal(rb, size.bottomRight(Offset.zero));
 
-      if (widget.axis == Axis.vertical) {
-        double top = topLeftOffset.dy;
-        double bottom = bottomRightOffset.dy;
-
-        if (_pointerYPosition < (top + scrollAreaSize) &&
-            _scrollController.position.pixels >
-                _scrollController.position.minScrollExtent) {
+      if (!widget.pages) {
+        double left = topLeftOffset.dx;
+        double right = bottomRightOffset.dx;
+        if (_pointerXPosition < (left + scrollAreaSize) &&
+            _mainScrollController.position.pixels >
+                _mainScrollController.position.minScrollExtent) {
           final overDrag =
-              max((top + scrollAreaSize) - _pointerYPosition, overDragMax);
+              max((left + scrollAreaSize) - _pointerXPosition, overDragMax);
           newOffset = max(
-              _scrollController.position.minScrollExtent,
-              _scrollController.position.pixels -
+              _mainScrollController.position.minScrollExtent,
+              _mainScrollController.position.pixels -
                   step * overDrag / overDragCoefficient);
-        } else if (_pointerYPosition > (bottom - scrollAreaSize) &&
-            _scrollController.position.pixels <
-                _scrollController.position.maxScrollExtent) {
+        } else if (_pointerXPosition > (right - scrollAreaSize) &&
+            _mainScrollController.position.pixels <
+                _mainScrollController.position.maxScrollExtent) {
           final overDrag = max<double>(
-              _pointerYPosition - (bottom - scrollAreaSize), overDragMax);
+              _pointerYPosition - (right - scrollAreaSize), overDragMax);
           newOffset = min(
-              _scrollController.position.maxScrollExtent,
-              _scrollController.position.pixels +
+              _mainScrollController.position.maxScrollExtent,
+              _mainScrollController.position.pixels +
                   step * overDrag / overDragCoefficient);
         }
       } else {
         double left = topLeftOffset.dx;
         double right = bottomRightOffset.dx;
-
-        if (_pointerXPosition < (left + scrollAreaSize) &&
-            _scrollController.position.pixels >
-                _scrollController.position.minScrollExtent) {
-          final overDrag =
-              max((left + scrollAreaSize) - _pointerXPosition, overDragMax);
-          newOffset = max(
-              _scrollController.position.minScrollExtent,
-              _scrollController.position.pixels -
-                  step * overDrag / overDragCoefficient);
-        } else if (_pointerXPosition > (right - scrollAreaSize) &&
-            _scrollController.position.pixels <
-                _scrollController.position.maxScrollExtent) {
-          final overDrag = max<double>(
-              _pointerYPosition - (right - scrollAreaSize), overDragMax);
-          newOffset = min(
-              _scrollController.position.maxScrollExtent,
-              _scrollController.position.pixels +
-                  step * overDrag / overDragCoefficient);
+        if (_pointerXPosition < (left + scrollAreaSize)) {
+          moveRight = false;
+        } else if (_pointerXPosition > (right - scrollAreaSize)) {
+          moveRight = true;
         }
       }
 
-      if (newOffset != null) {
-        _scrolling = true;
-        await _scrollController.animateTo(newOffset,
-            duration: Duration(milliseconds: duration), curve: Curves.linear);
-        _scrolling = false;
-        if (_pointerDown) _scrollList();
+      if (moveRight != null) {
+        if (moveRight) {
+          _scrolling = true;
+          _pageController?.nextPage(
+              duration: Duration(milliseconds: 200), curve: Curves.ease);
+          Future.delayed(Duration(seconds: 1)).then((value) {
+            _scrolling = false;
+          });
+        } else {
+          _pageController?.previousPage(
+              duration: Duration(milliseconds: 200), curve: Curves.ease);
+          Future.delayed(Duration(seconds: 1)).then((value) {
+            _scrolling = false;
+          });
+        }
       }
     }
   }

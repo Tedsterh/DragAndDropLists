@@ -165,6 +165,7 @@ class _HorizontalExample extends State<HorizontalExample> {
   }
 
   _onListReorder(int oldListIndex, oldPageIndex, int newListIndex, int newPageIndex) {
+    print("$oldListIndex, $oldPageIndex, $newListIndex, $newPageIndex");
     setState(() {
       var movedList = _lists[oldPageIndex].children.removeAt(oldListIndex);
       _lists[newPageIndex].children.insert(newListIndex, movedList);

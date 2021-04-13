@@ -70,7 +70,6 @@ class DragAndDropBuilderParameters {
   final DragHandleVerticalAlignment itemDragHandleVerticalAlignment;
   final bool constrainDraggingAxis;
   final bool disableScrolling;
-  final ScrollController listController;
   final InternalOnListDropOnLastTarget internalOnListDropOnLastTarget;
 
   DragAndDropBuilderParameters({
@@ -112,7 +111,6 @@ class DragAndDropBuilderParameters {
     this.listDragHandleVerticalAlignment = DragHandleVerticalAlignment.top,
     this.constrainDraggingAxis = true,
     this.disableScrolling = false,
-    @required this.listController,
     @required this.internalOnListDropOnLastTarget
   });
 }
