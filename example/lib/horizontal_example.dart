@@ -81,6 +81,13 @@ class _HorizontalExample extends State<HorizontalExample> {
     return DragAndDropPage(
       children: List.generate(outerList.children.length,
           (index) => _buildList(pageIndex, index)),
+      footer: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: Colors.green,
+        child: Icon(
+          Icons.add
+        ),
+      ),
     );
   }
 

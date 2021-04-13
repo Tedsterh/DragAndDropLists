@@ -19,8 +19,6 @@ class DragAndDropPage implements DragAndDropPageInterface {
     }
   }
 
-  PageStorageBucket _pageStorageBucket = PageStorageBucket();
-
   @override
   Widget generateWidget(DragAndDropBuilderParameters params) {
     DragAndDropListTarget dragAndDropListTarget = DragAndDropListTarget(
@@ -33,20 +31,11 @@ class DragAndDropPage implements DragAndDropPageInterface {
 
       Widget outerListHolder;
 
-      outerListHolder = _buildListView(params, dragAndDropListTarget);
-
-      contents.add(outerListHolder);
-
-      if (footer != null) {
-        contents.add(footer);
-      }
+      outerListHolder = _buildListView(params, dragAndDropListTarget, footer);
 
       if (children.where((e) => e is DragAndDropListExpansionInterface).isNotEmpty) {
-        outerListHolder = PageStorage(
-          child: Column(
-            children: contents,
-          ),
-          bucket: _pageStorageBucket,
+        outerListHolder = Column(
+          children: contents,
         );
       }
       return outerListHolder;
@@ -63,20 +52,27 @@ class DragAndDropPage implements DragAndDropPageInterface {
     }
   }
 
-  ListView _buildListView(DragAndDropBuilderParameters parameters, DragAndDropListTarget dragAndDropListTarget) {
+  ListView _buildListView(DragAndDropBuilderParameters parameters, DragAndDropListTarget dragAndDropListTarget, Widget footer) {
     return ListView(
       controller: parameters.listController,
-      children: _buildOuterList(dragAndDropListTarget, parameters),
+      children: _buildOuterList(dragAndDropListTarget, parameters, footer),
     );
   }
 
   List<Widget> _buildOuterList(DragAndDropListTarget dragAndDropListTarget,
-      DragAndDropBuilderParameters parameters) {
+      DragAndDropBuilderParameters parameters, Widget footer) {
     int childrenCount = _calculateChildrenCount(false);
 
-    return List.generate(childrenCount, (index) {
-      return _buildInnerList(index, childrenCount, dragAndDropListTarget,
-          false, parameters);
+    return List.generate(childrenCount + 2, (index) {
+      if (index == childrenCount) {
+        return footer ?? Container();
+      }
+      if (index == childrenCount + 1) {
+        return Container(
+          height: 100,
+        );
+      }
+      return _buildInnerList(index, childrenCount, dragAndDropListTarget, false, parameters);
     });
   }
 

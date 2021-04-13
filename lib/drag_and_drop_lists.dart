@@ -380,12 +380,16 @@ class DragAndDropListsState extends State<DragAndDropLists> {
   double _pointerXPosition;
   bool _scrolling = false;
 
+  PageStorageBucket _pageStorageBucket;
+
   @override
   void initState() {
     if (widget.scrollController != null)
       _scrollController = widget.scrollController;
     else
       _scrollController = ScrollController();
+
+    _pageStorageBucket = PageStorageBucket();
 
     super.initState();
   }
