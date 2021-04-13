@@ -14,5 +14,7 @@ class DragAndDropItem implements DragAndDropInterface {
 
   final bool isLargeWidget;
 
-  DragAndDropItem({@required this.child, this.canDrag = true, this.isSmallWidget = false, this.isLargeWidget = false});
+  final String taskID;
+
+  DragAndDropItem({@required this.child, this.canDrag = true, this.isSmallWidget = false, this.isLargeWidget = false, @required this.taskID});
 }

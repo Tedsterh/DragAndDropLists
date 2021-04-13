@@ -79,6 +79,7 @@ class _HorizontalExample extends State<HorizontalExample> {
   DragAndDropPage _buildPage(int pageIndex) {
     var outerList = _lists[pageIndex];
     return DragAndDropPage(
+      tabID: pageIndex.toString(),
       children: List.generate(outerList.children.length,
           (index) => _buildList(pageIndex, index)),
       footer: FloatingActionButton(
@@ -94,6 +95,7 @@ class _HorizontalExample extends State<HorizontalExample> {
   DragAndDropList _buildList(int pageIndex, int outerIndex) {
     var innerList = _lists[pageIndex].children[outerIndex];
     return DragAndDropList(
+      listID: innerList.name,
       isSideways: true,
       header: Row(
         children: <Widget>[
@@ -147,6 +149,7 @@ class _HorizontalExample extends State<HorizontalExample> {
 
   _buildItem(String item) {
     return DragAndDropItem(
+      taskID: item,
       child: Container(
         width: 50,
         height: 50,
@@ -157,15 +160,16 @@ class _HorizontalExample extends State<HorizontalExample> {
     );
   }
 
-  _onItemReorder(int oldItemIndex, int oldListIndex, int oldPageIndex, int newItemIndex, int newListIndex, int newPageIndex) {
+  _onItemReorder(String itemID, int oldItemIndex, int oldListIndex, String oldListID, int oldPageIndex, String oldPageID, int newItemIndex, int newListIndex, String newListID, int newPageIndex, String newPageID) {
+    print("$itemID $oldListID $oldPageID $newListID $newPageID");
     setState(() {
       var movedItem = _lists[oldPageIndex].children[oldListIndex].children.removeAt(oldItemIndex);
       _lists[newPageIndex].children[newListIndex].children.insert(newItemIndex, movedItem);
     });
   }
 
-  _onListReorder(int oldListIndex, oldPageIndex, int newListIndex, int newPageIndex) {
-    print("$oldListIndex, $oldPageIndex, $newListIndex, $newPageIndex");
+  _onListReorder(String listID, int oldListIndex, int oldPageIndex, String oldPageID, int newListIndex, int newPageIndex, String newPageID) {
+    print("$listID, $oldPageID, $newPageID");
     setState(() {
       var movedList = _lists[oldPageIndex].children.removeAt(oldListIndex);
       _lists[newPageIndex].children.insert(newListIndex, movedList);

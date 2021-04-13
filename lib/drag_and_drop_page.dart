@@ -14,10 +14,12 @@ class DragAndDropPage implements DragAndDropPageInterface {
   /// It is possible to not provide any children when an empty list is desired.
   final Widget footer;
 
+  final String tabID;
+
   ///
   final List<DragAndDropListInterface> children = <DragAndDropListInterface>[];
 
-  DragAndDropPage({List<DragAndDropListInterface> children, this.footer}) {
+  DragAndDropPage({List<DragAndDropListInterface> children, this.footer, @required this.tabID}) {
     if (children != null) {
       children.forEach((element) => this.children.add(element));
     }

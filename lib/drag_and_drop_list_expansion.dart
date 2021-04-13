@@ -42,6 +42,8 @@ class DragAndDropListExpansion implements DragAndDropListExpansionInterface {
   /// Disable to borders displayed at the top and bottom when expanded
   final bool disableTopAndBottomBorders;
 
+  final String listID;
+
   ValueNotifier<bool> _expanded = ValueNotifier<bool>(true);
   GlobalKey<ProgrammaticExpansionTileState> _expansionKey =
       GlobalKey<ProgrammaticExpansionTileState>();
@@ -62,6 +64,7 @@ class DragAndDropListExpansion implements DragAndDropListExpansionInterface {
     this.disableTopAndBottomBorders = false,
     this.isSmallWidget = false,
     this.isLargeWidget = false,
+    @required this.listID,
   }) : assert(listKey != null) {
     _expanded.value = initiallyExpanded;
   }

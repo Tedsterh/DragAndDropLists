@@ -19,8 +19,6 @@ import 'package:drag_and_drop_lists/drag_and_drop_item.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_item_target.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_list_interface.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_list_target.dart';
-import 'package:drag_and_drop_lists/drag_and_drop_list_wrapper.dart';
-import 'package:drag_and_drop_lists/drag_and_drop_page.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_page_interface.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_page_wrapper.dart';
 import 'package:flutter/material.dart';
@@ -37,12 +35,17 @@ export 'package:drag_and_drop_lists/drag_and_drop_list_target.dart';
 export 'package:drag_and_drop_lists/drag_and_drop_list_wrapper.dart';
 
 typedef void OnItemReorder(
+  String itemID,
   int oldItemIndex,
   int oldListIndex,
+  String oldListID,
   int oldPageIndex,
+  String oldPageID,
   int newItemIndex,
   int newListIndex,
+  String newListID,
   int newPageIndex,
+  String newPageID,
 );
 typedef void OnItemAdd(
   DragAndDropItem newItem,
@@ -50,8 +53,20 @@ typedef void OnItemAdd(
   int newItemIndex,
   int pageIndex,
 );
-typedef void OnListAdd(DragAndDropListInterface newList, int newListIndex, int newPageIndex);
-typedef void OnListReorder(int oldListIndex, int oldPageIndex, int newListIndex, int newPageIndex);
+typedef void OnListAdd(
+  DragAndDropListInterface newList,
+  int newListIndex,
+  int newPageIndex,
+);
+typedef void OnListReorder(
+  String listID,
+  int oldListIndex,
+  int oldPageIndex,
+  String oldPageID,
+  int newListIndex,
+  int newPageIndex,
+  String newPageID,
+);
 typedef void OnListDraggingChanged(
   DragAndDropListInterface list,
   bool dragging,
@@ -596,8 +611,9 @@ class DragAndDropListsState extends State<DragAndDropLists> {
       }
 
       if (widget.onItemReorder != null)
-        widget.onItemReorder(reorderedItemIndex, reorderedListIndex, reorderedPageIndex,
-            receiverItemIndex, receiverListIndex, receiverPageIndex);
+        widget.onItemReorder(
+            reordered.taskID, reorderedItemIndex, reorderedListIndex, widget.children[reorderedPageIndex].children[reorderedListIndex].listID, reorderedPageIndex, widget.children[reorderedPageIndex].tabID,
+            receiverItemIndex, receiverListIndex, widget.children[receiverPageIndex].children[receiverListIndex].listID, receiverPageIndex, widget.children[receiverPageIndex].tabID);
     }
   }
 
@@ -621,7 +637,7 @@ class DragAndDropListsState extends State<DragAndDropLists> {
         newListIndex--;
       }
       if (widget.onListReorder != null)
-        widget.onListReorder(reorderedListIndex, reorderedPageIndex, newListIndex, receiverPageIndex);
+        widget.onListReorder(reordered.listID, reorderedListIndex, reorderedPageIndex, widget.children[reorderedPageIndex].tabID, newListIndex, receiverPageIndex, widget.children[receiverPageIndex].tabID);
     }
   }
 
@@ -668,17 +684,17 @@ class DragAndDropListsState extends State<DragAndDropLists> {
         receiverItemIndex--;
       }
       if (widget.onItemReorder != null)
-        widget.onItemReorder(reorderedItemIndex, reorderedListIndex, reorderedPageIndex,
-            receiverItemIndex, receiverListIndex, receiverPageIndex);
+        widget.onItemReorder(
+            newOrReordered.taskID, reorderedItemIndex, reorderedListIndex, widget.children[reorderedPageIndex].children[reorderedListIndex].listID, reorderedPageIndex, widget.children[reorderedPageIndex].tabID,
+            receiverItemIndex, receiverListIndex, widget.children[receiverPageIndex].children[receiverListIndex].listID, receiverPageIndex, widget.children[receiverPageIndex].tabID);
     }
   }
 
-  _internalOnListDropOnLastTarget(
-      DragAndDropListInterface newOrReordered, DragAndDropListTarget receiver) {
+  _internalOnListDropOnLastTarget(DragAndDropListInterface newOrReordered, DragAndDropListTarget receiver) {
 
     int reorderedPageIndex = widget.children.indexWhere((e) => e.children.contains(newOrReordered));
     int receiverPageIndex = widget.children.indexWhere((e) => e.children.contains(newOrReordered));
-    // determine if newOrReordered is new or existing
+
     int reorderedListIndex = widget.children[reorderedPageIndex].children.indexWhere((e) => newOrReordered == e);
 
     if (widget.listOnAccept != null)
@@ -686,7 +702,7 @@ class DragAndDropListsState extends State<DragAndDropLists> {
 
     if (reorderedListIndex >= 0) {
       if (widget.onListReorder != null)
-        widget.onListReorder(reorderedListIndex, reorderedPageIndex, widget.children[reorderedPageIndex].children.length - 1, receiverPageIndex);
+        widget.onListReorder(newOrReordered.listID, reorderedListIndex, reorderedPageIndex, widget.children[reorderedPageIndex].tabID, widget.children[reorderedPageIndex].children.length - 1, receiverPageIndex, widget.children[receiverPageIndex].tabID);
     } else {
       if (widget.onListAdd != null)
         widget.onListAdd(newOrReordered, reorderedListIndex, receiverPageIndex);
