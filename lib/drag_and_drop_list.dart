@@ -171,18 +171,33 @@ class DragAndDropList implements DragAndDropListInterface {
           allChildren.add(params.itemDivider);
         }
       }
-      allChildren.add(DragAndDropItemTarget(
-        isSideways: isSideways,
-        parent: this,
-        isLargeWidget: isLargeWidget,
-        parameters: params,
-        isSmallWidget: isSmallWidget,
-        onReorderOrAdd: params.onItemDropOnLastTarget,
-        child: lastTarget ??
-            Container(
-              height: params.lastItemTargetHeight,
-            ),
-      ));
+      if (isSideways) {
+        allChildren.add(DragAndDropItemTarget(
+          isSideways: isSideways,
+          parent: this,
+          isLargeWidget: isLargeWidget,
+          parameters: params,
+          isSmallWidget: isSmallWidget,
+          onReorderOrAdd: params.onItemDropOnLastTarget,
+          child: lastTarget ??
+              Container(
+                width: params.lastItemTargetHeight,
+              ),
+        ));
+      } else {
+        allChildren.add(DragAndDropItemTarget(
+          isSideways: isSideways,
+          parent: this,
+          isLargeWidget: isLargeWidget,
+          parameters: params,
+          isSmallWidget: isSmallWidget,
+          onReorderOrAdd: params.onItemDropOnLastTarget,
+          child: lastTarget ??
+              Container(
+                height: params.lastItemTargetHeight,
+              ),
+        ));
+      }
       if (isSideways) {
         contents.add(
           Expanded(
