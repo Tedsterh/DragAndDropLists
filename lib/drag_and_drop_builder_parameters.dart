@@ -26,6 +26,10 @@ typedef void OnListReordered(
   DragAndDropListInterface reorderedList,
   DragAndDropListInterface receiverList,
 );
+typedef void InternalOnListDropOnLastTarget(
+  DragAndDropListInterface receiverList,
+  DragAndDropListTarget listTarget,
+);
 
 class DragAndDropBuilderParameters {
   final OnPointerMove onPointerMove;
@@ -66,6 +70,8 @@ class DragAndDropBuilderParameters {
   final DragHandleVerticalAlignment itemDragHandleVerticalAlignment;
   final bool constrainDraggingAxis;
   final bool disableScrolling;
+  final ScrollController listController;
+  final InternalOnListDropOnLastTarget internalOnListDropOnLastTarget;
 
   DragAndDropBuilderParameters({
     this.onPointerMove,
@@ -106,5 +112,7 @@ class DragAndDropBuilderParameters {
     this.listDragHandleVerticalAlignment = DragHandleVerticalAlignment.top,
     this.constrainDraggingAxis = true,
     this.disableScrolling = false,
+    @required this.listController,
+    @required this.internalOnListDropOnLastTarget
   });
 }

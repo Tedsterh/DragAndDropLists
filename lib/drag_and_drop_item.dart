@@ -10,7 +10,6 @@ class DragAndDropItem implements DragAndDropInterface {
   /// Set to false if it must remain fixed.
   final bool canDrag;
 
-  
   final bool isSmallWidget;
 
   final bool isLargeWidget;
