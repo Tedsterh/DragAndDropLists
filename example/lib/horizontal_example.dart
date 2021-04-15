@@ -1,5 +1,4 @@
-import 'package:drag_and_drop_lists/drag_and_drop_item.dart';
-import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
+import 'package:drag_and_drop_lists/drag_and_drop_page.dart';
 import 'package:example/navigation_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -18,17 +17,28 @@ class InnerList {
   InnerList({this.name, this.children});
 }
 
+class Pages {
+  final String name;
+  List<InnerList> children;
+  Pages({this.name, this.children});
+}
+
 class _HorizontalExample extends State<HorizontalExample> {
-  List<InnerList> _lists;
+  List<Pages> _lists;
 
   @override
   void initState() {
     super.initState();
 
     _lists = List.generate(9, (outerIndex) {
-      return InnerList(
-        name: outerIndex.toString(),
-        children: List.generate(12, (innerIndex) => '$outerIndex.$innerIndex'),
+      return Pages(
+        name: 'outerIndex',
+        children: List.generate(9, (innerIndex) {
+          return InnerList(
+            name: innerIndex.toString(),
+            children: List.generate(12, (innerInnerList) => '$innerIndex.$innerInnerList'),
+          );
+        })
       );
     });
   }
@@ -42,7 +52,7 @@ class _HorizontalExample extends State<HorizontalExample> {
       drawer: NavigationDrawer(),
       body: Container(
         child: DragAndDropLists(
-          children: List.generate(_lists.length, (index) => _buildList(index)),
+          children: List.generate(_lists.length, (index) => _buildPage(index)),
           onItemReorder: _onItemReorder,
           listWidth: 400,
           onListReorder: _onListReorder,
@@ -64,9 +74,26 @@ class _HorizontalExample extends State<HorizontalExample> {
     );
   }
 
-  _buildList(int outerIndex) {
-    var innerList = _lists[outerIndex];
+  DragAndDropPage _buildPage(int pageIndex) {
+    var outerList = _lists[pageIndex];
+    return DragAndDropPage(
+      tabID: pageIndex.toString(),
+      children: List.generate(outerList.children.length,
+          (index) => _buildList(pageIndex, index)),
+      footer: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: Colors.green,
+        child: Icon(
+          Icons.add
+        ),
+      ),
+    );
+  }
+
+  DragAndDropList _buildList(int pageIndex, int outerIndex) {
+    var innerList = _lists[pageIndex].children[outerIndex];
     return DragAndDropList(
+      listID: innerList.name,
       isSideways: true,
       header: Row(
         children: <Widget>[
@@ -78,7 +105,7 @@ class _HorizontalExample extends State<HorizontalExample> {
               ),
               padding: EdgeInsets.all(10),
               child: Text(
-                'Header ${innerList.name}',
+                'Header $pageIndex.${innerList.name}',
                 style: Theme.of(context).primaryTextTheme.headline6,
               ),
             ),
@@ -96,7 +123,7 @@ class _HorizontalExample extends State<HorizontalExample> {
               ),
               padding: EdgeInsets.all(10),
               child: Text(
-                'Footer ${innerList.name}',
+                'Footer $pageIndex.${innerList.name}',
                 style: Theme.of(context).primaryTextTheme.headline6,
               ),
             ),
@@ -120,6 +147,7 @@ class _HorizontalExample extends State<HorizontalExample> {
 
   _buildItem(String item) {
     return DragAndDropItem(
+      taskID: item,
       child: Container(
         width: 50,
         height: 50,
@@ -130,18 +158,19 @@ class _HorizontalExample extends State<HorizontalExample> {
     );
   }
 
-  _onItemReorder(
-      int oldItemIndex, int oldListIndex, int newItemIndex, int newListIndex) {
+  _onItemReorder(String itemID, int oldItemIndex, int oldListIndex, String oldListID, int oldPageIndex, String oldPageID, int newItemIndex, int newListIndex, String newListID, int newPageIndex, String newPageID) {
+    print("$itemID $oldListID $oldPageID $newListID $newPageID");
     setState(() {
-      var movedItem = _lists[oldListIndex].children.removeAt(oldItemIndex);
-      _lists[newListIndex].children.insert(newItemIndex, movedItem);
+      var movedItem = _lists[oldPageIndex].children[oldListIndex].children.removeAt(oldItemIndex);
+      _lists[newPageIndex].children[newListIndex].children.insert(newItemIndex, movedItem);
     });
   }
 
-  _onListReorder(int oldListIndex, int newListIndex) {
+  _onListReorder(String listID, int oldListIndex, int oldPageIndex, String oldPageID, int newListIndex, int newPageIndex, String newPageID) {
+    print("$listID, $oldPageID, $newPageID");
     setState(() {
-      var movedList = _lists.removeAt(oldListIndex);
-      _lists.insert(newListIndex, movedList);
+      var movedList = _lists[oldPageIndex].children.removeAt(oldListIndex);
+      _lists[newPageIndex].children.insert(newListIndex, movedList);
     });
   }
 }

@@ -2,6 +2,7 @@ import 'package:drag_and_drop_lists/drag_and_drop_item.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_item_target.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_list_interface.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
+import 'package:drag_and_drop_lists/drag_and_drop_page.dart';
 import 'package:flutter/widgets.dart';
 
 enum DragHandleVerticalAlignment {
@@ -25,6 +26,10 @@ typedef void OnItemDropOnLastTarget(
 typedef void OnListReordered(
   DragAndDropListInterface reorderedList,
   DragAndDropListInterface receiverList,
+);
+typedef void InternalOnListDropOnLastTarget(
+  DragAndDropListInterface receiverList,
+  DragAndDropListTarget listTarget,
 );
 
 class DragAndDropBuilderParameters {
@@ -66,6 +71,7 @@ class DragAndDropBuilderParameters {
   final DragHandleVerticalAlignment itemDragHandleVerticalAlignment;
   final bool constrainDraggingAxis;
   final bool disableScrolling;
+  final InternalOnListDropOnLastTarget internalOnListDropOnLastTarget;
 
   DragAndDropBuilderParameters({
     this.onPointerMove,
@@ -106,5 +112,6 @@ class DragAndDropBuilderParameters {
     this.listDragHandleVerticalAlignment = DragHandleVerticalAlignment.top,
     this.constrainDraggingAxis = true,
     this.disableScrolling = false,
+    @required this.internalOnListDropOnLastTarget
   });
 }

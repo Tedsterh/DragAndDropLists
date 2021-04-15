@@ -48,6 +48,8 @@ class DragAndDropList implements DragAndDropListInterface {
   /// It is possible to not provide any children when an empty list is desired.
   final List<DragAndDropItem> children = <DragAndDropItem>[];
 
+  final String listID;
+
   /// Whether or not this item can be dragged.
   /// Set to true if it can be reordered.
   /// Set to false if it must remain fixed.
@@ -77,7 +79,8 @@ class DragAndDropList implements DragAndDropListInterface {
       this.verticalAlignment = CrossAxisAlignment.start,
       this.canDrag = true,
       this.isSmallWidget = false,
-      this.isLargeWidget = false}) {
+      this.isLargeWidget = false,
+      @required this.listID}) {
     if (children != null) {
       children.forEach((element) => this.children.add(element));
     }
@@ -211,7 +214,6 @@ class DragAndDropList implements DragAndDropListInterface {
                     controller: _scrollController,
                     scrollDirection: Axis.horizontal,
                     physics: ClampingScrollPhysics(),
-                    clipBehavior: Clip.none,
                     child: Row(
                       crossAxisAlignment: verticalAlignment,
                       mainAxisSize: MainAxisSize.min,
@@ -228,7 +230,6 @@ class DragAndDropList implements DragAndDropListInterface {
           Expanded(
             child: SingleChildScrollView(
               physics: NeverScrollableScrollPhysics(),
-              clipBehavior: Clip.none,
               child: Column(
                 crossAxisAlignment: verticalAlignment,
                 mainAxisSize: MainAxisSize.max,
@@ -282,7 +283,9 @@ class DragAndDropList implements DragAndDropListInterface {
       _pointerYPosition = event.position.dy;
       _pointerXPosition = event.position.dx;
 
-      _scrollList(context);
+      if (_scrollController.hasClients) {
+        _scrollList(context);
+      }
     }
   }
 
@@ -345,7 +348,7 @@ class DragAndDropList implements DragAndDropListInterface {
           await _scrollController.animateTo(newOffset,
               duration: Duration(milliseconds: duration), curve: Curves.linear);
           _scrolling = false;
-          if (_pointerRight) _scrollList(context);
+          if (_pointerRight && _scrollController.hasClients) _scrollList(context);
         }
       }
     }
