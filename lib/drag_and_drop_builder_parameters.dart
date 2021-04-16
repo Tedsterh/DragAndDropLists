@@ -10,7 +10,6 @@ enum DragHandleVerticalAlignment {
   center,
   bottom,
 }
-
 typedef void OnPointerMove(PointerMoveEvent event);
 typedef void OnPointerUp(PointerUpEvent event);
 typedef void OnPointerDown(PointerDownEvent event);
@@ -72,6 +71,7 @@ class DragAndDropBuilderParameters {
   final bool constrainDraggingAxis;
   final bool disableScrolling;
   final InternalOnListDropOnLastTarget internalOnListDropOnLastTarget;
+  final OnPageChange onPageChange;
 
   DragAndDropBuilderParameters({
     this.onPointerMove,
@@ -112,6 +112,7 @@ class DragAndDropBuilderParameters {
     this.listDragHandleVerticalAlignment = DragHandleVerticalAlignment.top,
     this.constrainDraggingAxis = true,
     this.disableScrolling = false,
-    @required this.internalOnListDropOnLastTarget
+    @required this.internalOnListDropOnLastTarget,
+    @required this.onPageChange,
   });
 }

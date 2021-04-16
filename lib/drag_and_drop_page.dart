@@ -1,12 +1,14 @@
 import 'dart:math';
 
+import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+
 import 'package:drag_and_drop_lists/drag_and_drop_builder_parameters.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_list_interface.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_list_target.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_list_wrapper.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_page_interface.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 export 'package:drag_and_drop_lists/drag_and_drop_builder_parameters.dart';
 export 'package:drag_and_drop_lists/drag_and_drop_item.dart';
@@ -16,9 +18,11 @@ export 'package:drag_and_drop_lists/drag_and_drop_list.dart';
 export 'package:drag_and_drop_lists/drag_and_drop_list_expansion.dart';
 export 'package:drag_and_drop_lists/drag_and_drop_list_target.dart';
 export 'package:drag_and_drop_lists/drag_and_drop_list_wrapper.dart';
+export 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 export 'package:drag_and_drop_lists/drag_and_drop_page_interface.dart';
 export 'package:drag_and_drop_lists/drag_and_drop_page_wrapper.dart';
-export 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
+
+import 'package:equatable/equatable.dart';
 
 class DragAndDropPage implements DragAndDropPageInterface {
   /// The child elements that will be contained in this list.
@@ -213,4 +217,10 @@ class DragAndDropPage implements DragAndDropPageInterface {
       {RenderObject ancestor}) {
     return MatrixUtils.transformPoint(object.getTransformTo(ancestor), point);
   }
+
+  @override
+  List<Object> get props => [footer, tabID];
+
+  @override
+  bool get stringify => true;
 }

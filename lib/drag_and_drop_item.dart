@@ -17,4 +17,16 @@ class DragAndDropItem implements DragAndDropInterface {
   final String taskID;
 
   DragAndDropItem({@required this.child, this.canDrag = true, this.isSmallWidget = false, this.isLargeWidget = false, @required this.taskID});
+
+  @override
+  List<Object> get props => [
+    child,
+    canDrag,
+    isSmallWidget,
+    isLargeWidget,
+    taskID,
+  ];
+
+  @override
+  bool get stringify => true;
 }
