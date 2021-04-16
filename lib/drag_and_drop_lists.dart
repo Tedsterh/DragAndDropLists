@@ -300,6 +300,8 @@ class DragAndDropLists extends StatefulWidget {
   // Must not be null if pages set to false
   final double screenWidth;
 
+  final PageController pageController;
+
   DragAndDropLists({
     this.children,
     this.onItemReorder,
@@ -353,6 +355,7 @@ class DragAndDropLists extends StatefulWidget {
     this.constrainDraggingAxis = true,
     this.pages = true,
     this.screenWidth = 400,
+    this.pageController,
     Key key,
   }) : super(key: key) {
     if (listGhost == null &&
@@ -397,7 +400,11 @@ class DragAndDropListsState extends State<DragAndDropLists> {
     _pageStorageBucket = PageStorageBucket();
 
     if (widget.pages) {
-      _pageController = PageController();
+      if (widget.pageController != null) {
+        _pageController = widget.pageController;
+      } else {
+        _pageController = PageController();
+      }
     } else {
       _mainScrollController = ScrollController();
     }
