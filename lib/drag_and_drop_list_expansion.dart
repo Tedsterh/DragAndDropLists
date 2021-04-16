@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -12,7 +13,7 @@ import 'package:drag_and_drop_lists/programmatic_expansion_tile.dart';
 typedef void OnExpansionChanged(bool expanded);
 
 /// This class mirrors flutter's [ExpansionTile], with similar options.
-class DragAndDropListExpansion implements DragAndDropListExpansionInterface {
+class DragAndDropListExpansion extends Equatable implements DragAndDropListExpansionInterface {
   final Widget title;
   final Widget subtitle;
   final Widget trailing;
@@ -93,9 +94,6 @@ class DragAndDropListExpansion implements DragAndDropListExpansionInterface {
   }
 
   @override
-  bool get stringify => true;
-
-  @override
   Widget generateWidget(DragAndDropBuilderParameters params) {
     var contents = _generateDragAndDropListInnerContents(params);
 
@@ -164,7 +162,7 @@ class DragAndDropListExpansion implements DragAndDropListExpansionInterface {
 
   List<Widget> _generateDragAndDropListInnerContents(
       DragAndDropBuilderParameters params) {
-    var contents = List<Widget>();
+    var contents = <Widget>[];
     if (children != null && children.isNotEmpty) {
       for (int i = 0; i < children.length; i++) {
         contents.add(DragAndDropItemWrapper(

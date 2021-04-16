@@ -22,9 +22,7 @@ export 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 export 'package:drag_and_drop_lists/drag_and_drop_page_interface.dart';
 export 'package:drag_and_drop_lists/drag_and_drop_page_wrapper.dart';
 
-import 'package:equatable/equatable.dart';
-
-class DragAndDropPage implements DragAndDropPageInterface {
+class DragAndDropPage extends Equatable implements DragAndDropPageInterface {
   /// The child elements that will be contained in this list.
   /// It is possible to not provide any children when an empty list is desired.
   final Widget footer;
@@ -220,7 +218,4 @@ class DragAndDropPage implements DragAndDropPageInterface {
 
   @override
   List<Object> get props => [footer, tabID];
-
-  @override
-  bool get stringify => true;
 }
