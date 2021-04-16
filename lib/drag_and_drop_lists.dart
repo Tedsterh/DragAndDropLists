@@ -812,18 +812,18 @@ class DragAndDropListsState extends State<DragAndDropLists> {
         }
       }
 
-      if (moveRight != null) {
+      if (moveRight != null && _scrolling) {
         if (moveRight) {
           _scrolling = true;
           _pageController?.nextPage(
               duration: Duration(milliseconds: 200), curve: Curves.ease);
-          Future.delayed(Duration(seconds: 1)).then((value) {
+          Future.delayed(Duration(seconds: 2)).then((value) {
             _scrolling = false;
           });
         } else {
           _pageController?.previousPage(
               duration: Duration(milliseconds: 200), curve: Curves.ease);
-          Future.delayed(Duration(seconds: 1)).then((value) {
+          Future.delayed(Duration(seconds: 2)).then((value) {
             _scrolling = false;
           });
         }
