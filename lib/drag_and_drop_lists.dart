@@ -652,13 +652,37 @@ class DragAndDropListsState extends State<DragAndDropLists> {
       widget.itemTargetOnAccept(newOrReordered, parentList, receiver);
     }
 
-    int reorderedPageIndex = widget.children.indexWhere((e) => e.children.contains(parentList));
-    int receiverPageIndex = widget.children.indexWhere((e) => e.children.contains(receiver.parent));
-
+    int reorderedPageIndex = -1;
     int reorderedListIndex = -1;
     int reorderedItemIndex = -1;
+    int receiverPageIndex = -1;
     int receiverListIndex = -1;
     int receiverItemIndex = -1;
+
+    if (widget.children != null && widget.children.isNotEmpty) {
+      for (var j = 0; j < widget.children.length; j++) {
+        for (int i = 0; i < widget.children[j].children.length; i++) {
+          if (reorderedItemIndex == -1) {
+          reorderedItemIndex = widget.children[j].children[i].children?.indexWhere((e) => newOrReordered == e) ??
+              -1;
+          if (reorderedItemIndex != -1) {
+            reorderedListIndex = i;
+            reorderedPageIndex = j;
+          }
+        }
+
+        if (receiverItemIndex == -1 && widget.children[j].children[i] == parentList) {
+          receiverListIndex = i;
+          receiverItemIndex = widget.children[j].children[i].children?.length ?? -1;
+          receiverPageIndex = j;
+        }
+
+        if (reorderedItemIndex != -1 && receiverItemIndex != -1) {
+          break;
+        }
+        }
+      }
+    }
 
     if (widget.children != null && widget.children.isNotEmpty) {
       for (int i = 0; i < widget.children.length; i++) {
