@@ -50,6 +50,7 @@ class DragAndDropPage extends Equatable implements DragAndDropPageInterface {
   Widget generateWidget(DragAndDropBuilderParameters params) {
     DragAndDropListTarget dragAndDropListTarget = DragAndDropListTarget(
       parameters: params,
+      tabID: tabID,
       onDropOnLastTarget: params.internalOnListDropOnLastTarget,
     );
 
