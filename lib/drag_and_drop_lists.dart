@@ -724,14 +724,14 @@ class DragAndDropListsState extends State<DragAndDropLists> {
     int reorderedPageIndex = widget.children.indexWhere((e) => e.children.contains(newOrReordered));
     int receiverPageIndex = widget.children.indexWhere((e) => e.tabID == receiver.tabID);
 
-    int reorderedListIndex = widget.children[reorderedPageIndex].children.indexWhere((e) => newOrReordered == e);
+    int reorderedListIndex = widget.children[reorderedPageIndex].children.indexWhere((e) => e.listID == newOrReordered.listID);
 
     if (widget.listOnAccept != null)
       widget.listTargetOnAccept(newOrReordered, receiver);
 
     if (reorderedListIndex >= 0) {
       if (widget.onListReorder != null)
-        widget.onListReorder(newOrReordered.listID, reorderedListIndex, reorderedPageIndex, widget.children[reorderedPageIndex].tabID, widget.children[receiverPageIndex].children.length, receiverPageIndex, widget.children[receiverPageIndex].tabID);
+        widget.onListReorder(newOrReordered.listID, reorderedListIndex, reorderedPageIndex, widget.children[reorderedPageIndex].tabID, widget.children[receiverPageIndex].children.length - 1, receiverPageIndex, widget.children[receiverPageIndex].tabID);
     } else {
       if (widget.onListAdd != null)
         widget.onListAdd(newOrReordered, reorderedListIndex, receiverPageIndex);
