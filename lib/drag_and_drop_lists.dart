@@ -583,10 +583,9 @@ class DragAndDropListsState extends State<DragAndDropLists> {
     int receiverItemIndex = -1;
 
     for (var j = 0; j < widget.children.length; j++) {
-      for (int i = 0; i < widget.children.length; i++) {
+      for (int i = 0; i < widget.children[j].children.length; i++) {
         if (reorderedItemIndex == -1) {
-          reorderedItemIndex =
-              widget.children[j].children[i].children.indexWhere((e) => reordered == e);
+          reorderedItemIndex = widget.children[j].children[i].children.indexWhere((e) => reordered == e);
           if (reorderedItemIndex != -1) {
             reorderedListIndex = i;
             reorderedPageIndex = j;
