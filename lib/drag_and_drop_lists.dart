@@ -654,7 +654,7 @@ class DragAndDropListsState extends State<DragAndDropLists> {
     }
 
     int reorderedPageIndex = widget.children.indexWhere((e) => e.children.contains(parentList));
-    int receiverPageIndex = widget.children.indexWhere((e) => e.children.contains(parentList));
+    int receiverPageIndex = widget.children.indexWhere((e) => e.children.contains(receiver.parent));
 
     int reorderedListIndex = -1;
     int reorderedItemIndex = -1;
@@ -699,7 +699,7 @@ class DragAndDropListsState extends State<DragAndDropLists> {
   _internalOnListDropOnLastTarget(DragAndDropListInterface newOrReordered, DragAndDropListTarget receiver) {
 
     int reorderedPageIndex = widget.children.indexWhere((e) => e.children.contains(newOrReordered));
-    int receiverPageIndex = widget.children.indexWhere((e) => e.children.contains(newOrReordered));
+    int receiverPageIndex = widget.children.indexWhere((e) => e.tabID == receiver.tabID);
 
     int reorderedListIndex = widget.children[reorderedPageIndex].children.indexWhere((e) => newOrReordered == e);
 

@@ -13,12 +13,14 @@ class DragAndDropListTarget extends StatefulWidget {
   final DragAndDropBuilderParameters parameters;
   final OnDropOnLastTarget onDropOnLastTarget;
   final double lastListTargetSize;
+  final String tabID;
 
   DragAndDropListTarget(
       {this.child,
       @required this.parameters,
       @required this.onDropOnLastTarget,
       this.lastListTargetSize = 110,
+      @required this.tabID,
       Key key})
       : super(key: key);
 
