@@ -1,9 +1,11 @@
+import 'package:equatable/equatable.dart';
+import 'package:flutter/widgets.dart';
+
 import 'package:drag_and_drop_lists/drag_and_drop_item.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_item_target.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_list_interface.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_page.dart';
-import 'package:flutter/widgets.dart';
 
 enum DragHandleVerticalAlignment {
   top,
@@ -31,7 +33,7 @@ typedef void InternalOnListDropOnLastTarget(
   DragAndDropListTarget listTarget,
 );
 
-class DragAndDropBuilderParameters {
+class DragAndDropBuilderParameters extends Equatable {
   final OnPointerMove onPointerMove;
   final OnPointerUp onPointerUp;
   final OnPointerDown onPointerDown;
@@ -115,4 +117,50 @@ class DragAndDropBuilderParameters {
     @required this.internalOnListDropOnLastTarget,
     @required this.onPageChange,
   });
+
+  @override
+  List<Object> get props {
+    return [
+      onPointerMove,
+      onPointerUp,
+      onPointerDown,
+      onItemReordered,
+      onItemDropOnLastTarget,
+      onListReordered,
+      listOnWillAccept,
+      listTargetOnWillAccept,
+      onListDraggingChanged,
+      itemOnWillAccept,
+      itemTargetOnWillAccept,
+      onItemDraggingChanged,
+      axis,
+      verticalAlignment,
+      listDraggingWidth,
+      dragOnLongPress,
+      itemSizeAnimationDuration,
+      itemGhost,
+      itemGhostOpacity,
+      itemDivider,
+      itemDraggingWidth,
+      itemDecorationWhileDragging,
+      listSizeAnimationDuration,
+      listGhost,
+      listGhostOpacity,
+      listPadding,
+      listDecoration,
+      listDecorationWhileDragging,
+      listInnerDecoration,
+      listWidth,
+      lastItemTargetHeight,
+      addLastItemTargetHeightToTop,
+      dragHandle,
+      dragHandleOnLeft,
+      listDragHandleVerticalAlignment,
+      itemDragHandleVerticalAlignment,
+      constrainDraggingAxis,
+      disableScrolling,
+      internalOnListDropOnLastTarget,
+      onPageChange,
+    ];
+  }
 }
