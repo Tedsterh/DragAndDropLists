@@ -27,7 +27,6 @@ import 'package:flutter/widgets.dart';
 
 
 typedef void OnPageChange(
-  int index,
   String tabID,
 );
 typedef void OnItemReorder(
@@ -670,9 +669,9 @@ class DragAndDropListsState extends State<DragAndDropLists> {
           if (reorderedItemIndex != -1) reorderedListIndex = i;
         }
 
-        if (receiverItemIndex == -1 && widget.children[reorderedPageIndex].children[i] == parentList) {
+        if (receiverItemIndex == -1 && widget.children[receiverPageIndex].children[i] == parentList) {
           receiverListIndex = i;
-          receiverItemIndex = widget.children[reorderedPageIndex].children[i].children?.length ?? -1;
+          receiverItemIndex = widget.children[receiverPageIndex].children[i].children?.length ?? -1;
         }
 
         if (reorderedItemIndex != -1 && receiverItemIndex != -1) {

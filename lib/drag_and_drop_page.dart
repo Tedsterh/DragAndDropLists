@@ -9,6 +9,7 @@ import 'package:drag_and_drop_lists/drag_and_drop_list_interface.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_list_target.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_list_wrapper.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_page_interface.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 export 'package:drag_and_drop_lists/drag_and_drop_builder_parameters.dart';
 export 'package:drag_and_drop_lists/drag_and_drop_item.dart';
@@ -65,11 +66,20 @@ class DragAndDropPage extends Equatable implements DragAndDropPageInterface {
         );
       }
       return Builder(
-        builder: (context) => Listener(
-          onPointerMove: (event) => _onPointerMove(event, context),
-          onPointerDown: _onPointerDown,
-          onPointerUp: _onPointerUp,
-          child: outerListHolder,
+        builder: (context) => VisibilityDetector(
+          key: Key('$tabID'),
+          onVisibilityChanged: (info) {
+            var visiblePercentage = info.visibleFraction * 100;
+            if (visiblePercentage == 100.0) {
+              params.onPageChange(tabID);
+            }
+          },
+          child: Listener(
+            onPointerMove: (event) => _onPointerMove(event, context),
+            onPointerDown: _onPointerDown,
+            onPointerUp: _onPointerUp,
+            child: outerListHolder,
+          ),
         ),
       );
     } else {
