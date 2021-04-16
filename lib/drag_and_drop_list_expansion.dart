@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:drag_and_drop_lists/drag_and_drop_builder_parameters.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_item.dart';
@@ -6,8 +8,6 @@ import 'package:drag_and_drop_lists/drag_and_drop_item_target.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_item_wrapper.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_list_interface.dart';
 import 'package:drag_and_drop_lists/programmatic_expansion_tile.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 typedef void OnExpansionChanged(bool expanded);
 
@@ -44,8 +44,8 @@ class DragAndDropListExpansion implements DragAndDropListExpansionInterface {
 
   final String listID;
 
-  ValueNotifier<bool> _expanded = ValueNotifier<bool>(true);
-  GlobalKey<ProgrammaticExpansionTileState> _expansionKey =
+  final ValueNotifier<bool> _expanded = ValueNotifier<bool>(true);
+  final GlobalKey<ProgrammaticExpansionTileState> _expansionKey =
       GlobalKey<ProgrammaticExpansionTileState>();
 
   DragAndDropListExpansion({
@@ -68,6 +68,32 @@ class DragAndDropListExpansion implements DragAndDropListExpansionInterface {
   }) : assert(listKey != null) {
     _expanded.value = initiallyExpanded;
   }
+
+  @override
+  List<Object> get props {
+    return [
+      title,
+      subtitle,
+      trailing,
+      leading,
+      initiallyExpanded,
+      listKey,
+      onExpansionChanged,
+      backgroundColor,
+      children,
+      contentsWhenEmpty,
+      lastTarget,
+      canDrag,
+      isSmallWidget,
+      isLargeWidget,
+      disableTopAndBottomBorders,
+      listID,
+      _expansionKey,
+    ];
+  }
+
+  @override
+  bool get stringify => true;
 
   @override
   Widget generateWidget(DragAndDropBuilderParameters params) {

@@ -25,6 +25,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
+
+typedef void OnPageChange(
+  int index,
+  String tabID,
+);
 typedef void OnItemReorder(
   String itemID,
   int oldItemIndex,
@@ -302,6 +307,8 @@ class DragAndDropLists extends StatefulWidget {
 
   final PageController pageController;
 
+  final OnPageChange onPageChange;
+
   DragAndDropLists({
     this.children,
     this.onItemReorder,
@@ -356,6 +363,7 @@ class DragAndDropLists extends StatefulWidget {
     this.pages = true,
     this.screenWidth = 400,
     this.pageController,
+    this.onPageChange,
     Key key,
   }) : super(key: key) {
     if (listGhost == null &&
@@ -454,6 +462,7 @@ class DragAndDropListsState extends State<DragAndDropLists> {
       constrainDraggingAxis: widget.constrainDraggingAxis,
       disableScrolling: widget.disableScrolling,
       internalOnListDropOnLastTarget: _internalOnListDropOnLastTarget,
+      onPageChange: widget.onPageChange,
     );
 
     if (widget.pages) {
