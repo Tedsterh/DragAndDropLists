@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -10,7 +11,7 @@ import 'package:drag_and_drop_lists/drag_and_drop_item_target.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_item_wrapper.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_list_interface.dart';
 
-class DragAndDropList implements DragAndDropListInterface {
+class DragAndDropList extends Equatable implements DragAndDropListInterface {
   /// The widget that is displayed at the top of the list.
   final Widget header;
 
@@ -383,7 +384,4 @@ class DragAndDropList implements DragAndDropListInterface {
       _scrolling,
     ];
   }
-
-  @override
-  bool get stringify => true;
 }

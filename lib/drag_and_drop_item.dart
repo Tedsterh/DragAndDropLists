@@ -1,7 +1,8 @@
 import 'package:drag_and_drop_lists/drag_and_drop_interface.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 
-class DragAndDropItem implements DragAndDropInterface {
+class DragAndDropItem extends Equatable implements DragAndDropInterface {
   /// The child widget of this item.
   final Widget child;
 
@@ -26,7 +27,4 @@ class DragAndDropItem implements DragAndDropInterface {
     isLargeWidget,
     taskID,
   ];
-
-  @override
-  bool get stringify => true;
 }
