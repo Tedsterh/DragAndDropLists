@@ -72,7 +72,7 @@ class DragAndDropPage extends Equatable implements DragAndDropPageInterface {
           onVisibilityChanged: (info) {
             var visiblePercentage = info.visibleFraction * 100;
             if (visiblePercentage == 100.0) {
-              params.onPageChange(tabID);
+              params.onPageChange?.call(tabID);
             }
           },
           child: Listener(
