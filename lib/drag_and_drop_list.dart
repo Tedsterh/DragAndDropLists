@@ -144,6 +144,7 @@ class DragAndDropList extends Equatable implements DragAndDropListInterface {
       width: params.axis == Axis.vertical
           ? double.infinity
           : params.listWidth - params.listPadding.horizontal,
+      clipBehavior: Clip.none,
       decoration: decoration ?? params.listDecoration,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -215,6 +216,7 @@ class DragAndDropList extends Equatable implements DragAndDropListInterface {
                   child: SingleChildScrollView(
                     controller: _scrollController,
                     scrollDirection: Axis.horizontal,
+                    clipBehavior: Clip.none,
                     physics: ClampingScrollPhysics(),
                     child: Row(
                       crossAxisAlignment: verticalAlignment,
@@ -231,6 +233,7 @@ class DragAndDropList extends Equatable implements DragAndDropListInterface {
         contents.add(
           Expanded(
             child: SingleChildScrollView(
+              clipBehavior: Clip.none,
               physics: NeverScrollableScrollPhysics(),
               child: Column(
                 crossAxisAlignment: verticalAlignment,
@@ -245,6 +248,7 @@ class DragAndDropList extends Equatable implements DragAndDropListInterface {
       contents.add(
         Expanded(
           child: SingleChildScrollView(
+            clipBehavior: Clip.none,
             physics: NeverScrollableScrollPhysics(),
             child: Column(
               mainAxisSize: MainAxisSize.max,

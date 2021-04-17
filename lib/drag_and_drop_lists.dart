@@ -812,7 +812,7 @@ class DragAndDropListsState extends State<DragAndDropLists> {
         }
       }
 
-      if (moveRight != null && !_scrolling) {
+      if (moveRight != null) {
         if (moveRight) {
           _scrolling = true;
           _pageController?.nextPage(
