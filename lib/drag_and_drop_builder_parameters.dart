@@ -60,6 +60,7 @@ class DragAndDropBuilderParameters extends Equatable {
   final Widget listGhost;
   final double listGhostOpacity;
   final EdgeInsets listPadding;
+  final EdgeInsets internalListPadding;
   final Decoration listDecoration;
   final Decoration listDecorationWhileDragging;
   final Decoration listInnerDecoration;
@@ -118,6 +119,7 @@ class DragAndDropBuilderParameters extends Equatable {
     @required this.internalOnListDropOnLastTarget,
     @required this.onPageChange,
     this.lastListTargetSize,
+    @required this.internalListPadding,
   });
 
   @override

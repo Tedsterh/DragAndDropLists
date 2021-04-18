@@ -310,6 +310,8 @@ class DragAndDropLists extends StatefulWidget {
 
   final ScrollPhysics scrollPhysics;
 
+  final EdgeInsets internalListPadding;
+
   DragAndDropLists({
     this.children,
     this.onItemReorder,
@@ -366,6 +368,7 @@ class DragAndDropLists extends StatefulWidget {
     this.pageController,
     this.onPageChange,
     this.scrollPhysics,
+    this.internalListPadding,
     Key key,
   }) : super(key: key) {
     if (listGhost == null &&
@@ -465,7 +468,8 @@ class DragAndDropListsState extends State<DragAndDropLists> {
       disableScrolling: widget.disableScrolling,
       internalOnListDropOnLastTarget: _internalOnListDropOnLastTarget,
       onPageChange: widget.onPageChange,
-      lastListTargetSize: widget.lastListTargetSize
+      lastListTargetSize: widget.lastListTargetSize,
+      internalListPadding: widget.internalListPadding,
     );
 
     if (widget.pages) {
