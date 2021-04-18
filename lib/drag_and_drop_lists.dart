@@ -462,6 +462,7 @@ class DragAndDropListsState extends State<DragAndDropLists> {
       disableScrolling: widget.disableScrolling,
       internalOnListDropOnLastTarget: _internalOnListDropOnLastTarget,
       onPageChange: widget.onPageChange,
+      lastListTargetSize: widget.lastListTargetSize
     );
 
     if (widget.pages) {

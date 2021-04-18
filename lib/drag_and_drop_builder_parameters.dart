@@ -74,6 +74,7 @@ class DragAndDropBuilderParameters extends Equatable {
   final bool disableScrolling;
   final InternalOnListDropOnLastTarget internalOnListDropOnLastTarget;
   final OnPageChange onPageChange;
+  final double lastListTargetSize;
 
   DragAndDropBuilderParameters({
     this.onPointerMove,
@@ -116,6 +117,7 @@ class DragAndDropBuilderParameters extends Equatable {
     this.disableScrolling = false,
     @required this.internalOnListDropOnLastTarget,
     @required this.onPageChange,
+    this.lastListTargetSize,
   });
 
   @override
@@ -161,6 +163,7 @@ class DragAndDropBuilderParameters extends Equatable {
       disableScrolling,
       internalOnListDropOnLastTarget,
       onPageChange,
+      lastListTargetSize,
     ];
   }
 }
