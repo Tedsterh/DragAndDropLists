@@ -38,17 +38,9 @@ class DragAndDropPage extends Equatable implements DragAndDropPageInterface {
       children.forEach((element) => this.children.add(element));
     }
   }
-  bool _pointerDown = false;
-  double _pointerYPosition;
-  double _pointerXPosition;
-  bool _scrolling = false;
-
-  ScrollController _scrollController;
 
   @override
   Widget generateWidget(DragAndDropBuilderParameters params, ScrollController scrollController) {
-    _scrollController = scrollController;
-
     DragAndDropListTarget dragAndDropListTarget = DragAndDropListTarget(
       parameters: params,
       tabID: tabID,
@@ -60,7 +52,7 @@ class DragAndDropPage extends Equatable implements DragAndDropPageInterface {
 
       Widget outerListHolder;
 
-      outerListHolder = _buildListView(params, dragAndDropListTarget, footer);
+      outerListHolder = _buildListView(params, dragAndDropListTarget, footer, scrollController);
 
       if (children.where((e) => e is DragAndDropListExpansionInterface).isNotEmpty) {
         outerListHolder = Column(
@@ -76,12 +68,7 @@ class DragAndDropPage extends Equatable implements DragAndDropPageInterface {
               params.onPageChange?.call(tabID);
             }
           },
-          child: Listener(
-            onPointerMove: (event) => _onPointerMove(event, context),
-            onPointerDown: _onPointerDown,
-            onPointerUp: _onPointerUp,
-            child: outerListHolder,
-          ),
+          child: outerListHolder,
         ),
       );
     } else {
@@ -98,9 +85,9 @@ class DragAndDropPage extends Equatable implements DragAndDropPageInterface {
   }
 
   ListView _buildListView(DragAndDropBuilderParameters parameters,
-      DragAndDropListTarget dragAndDropListTarget, Widget footer) {
+      DragAndDropListTarget dragAndDropListTarget, Widget footer, ScrollController scrollController) {
     return ListView(
-      controller: _scrollController,
+      controller: scrollController,
       children: _buildOuterList(dragAndDropListTarget, parameters, footer),
     );
   }
@@ -145,87 +132,6 @@ class DragAndDropPage extends Equatable implements DragAndDropPageInterface {
         parameters: parameters,
       );
     }
-  }
-
-  _onPointerMove(PointerMoveEvent event, BuildContext context) {
-    if (_pointerDown) {
-      _pointerYPosition = event.position.dy;
-      _pointerXPosition = event.position.dx;
-
-      if (_scrollController.hasClients) {
-        _scrollList(context);
-      }
-    }
-  }
-
-  _onPointerDown(PointerDownEvent event) {
-    _pointerDown = true;
-    _pointerYPosition = event.position.dy;
-    _pointerXPosition = event.position.dx;
-  }
-
-  _onPointerUp(PointerUpEvent event) {
-    _pointerDown = false;
-  }
-
-  _scrollList(context) async {
-    if (!_scrolling &&
-        _pointerDown &&
-        _pointerYPosition != null &&
-        _pointerXPosition != null) {
-      int duration = 30; // in ms
-      int scrollAreaSize = 20;
-      double step = 1.5;
-      double overDragMax = 20.0;
-      double overDragCoefficient = 5.0;
-      double newOffset;
-
-      var rb = context.findRenderObject();
-      Size size;
-      if (rb is RenderBox)
-        size = rb.size;
-      else if (rb is RenderSliver) size = rb.paintBounds.size;
-      var topLeftOffset = localToGlobal(rb, Offset.zero);
-      var bottomRightOffset = localToGlobal(rb, size.bottomRight(Offset.zero));
-
-      if (true) {
-        double top = topLeftOffset.dy;
-        double bottom = bottomRightOffset.dy;
-
-        if (_pointerYPosition < (top + scrollAreaSize) &&
-            _scrollController.position.pixels >
-                _scrollController.position.minScrollExtent) {
-          final overDrag =
-              max((top + scrollAreaSize) - _pointerYPosition, overDragMax);
-          newOffset = max(
-              _scrollController.position.minScrollExtent,
-              _scrollController.position.pixels -
-                  step * overDrag / overDragCoefficient);
-        } else if (_pointerYPosition > (bottom - scrollAreaSize) &&
-            _scrollController.position.pixels <
-                _scrollController.position.maxScrollExtent) {
-          final overDrag = max<double>(
-              _pointerYPosition - (bottom - scrollAreaSize), overDragMax);
-          newOffset = min(
-              _scrollController.position.maxScrollExtent,
-              _scrollController.position.pixels +
-                  step * overDrag / overDragCoefficient);
-        }
-      }
-
-      if (newOffset != null) {
-        _scrolling = true;
-        await _scrollController.animateTo(newOffset,
-            duration: Duration(milliseconds: duration), curve: Curves.linear);
-        _scrolling = false;
-        if (_pointerDown) _scrollList(context);
-      }
-    }
-  }
-
-  static Offset localToGlobal(RenderObject object, Offset point,
-      {RenderObject ancestor}) {
-    return MatrixUtils.transformPoint(object.getTransformTo(ancestor), point);
   }
 
   @override
