@@ -220,7 +220,7 @@ class DragAndDropList extends Equatable implements DragAndDropListInterface {
                     physics: ClampingScrollPhysics(),
                     child: Row(
                       crossAxisAlignment: verticalAlignment,
-                      mainAxisSize: MainAxisSize.min,
+                      mainAxisSize: MainAxisSize.max,
                       children: allChildren,
                     ),
                   ),

@@ -54,6 +54,7 @@ class _HorizontalExample extends State<HorizontalExample> {
         child: DragAndDropLists(
           children: List.generate(_lists.length, (index) => _buildPage(index)),
           onItemReorder: _onItemReorder,
+          lastListTargetSize: 50,
           listWidth: 400,
           onListReorder: _onListReorder,
           pageController: PageController(

@@ -45,6 +45,7 @@ class DragAndDropPage extends Equatable implements DragAndDropPageInterface {
       parameters: params,
       tabID: tabID,
       onDropOnLastTarget: params.internalOnListDropOnLastTarget,
+      lastListTargetSize: params.lastListTargetSize,
     );
 
     if (children != null && children.isNotEmpty) {
