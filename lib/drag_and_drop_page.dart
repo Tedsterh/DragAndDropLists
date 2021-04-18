@@ -38,16 +38,17 @@ class DragAndDropPage extends Equatable implements DragAndDropPageInterface {
       children.forEach((element) => this.children.add(element));
     }
   }
-
-  final ScrollController _scrollController = ScrollController();
-
   bool _pointerDown = false;
   double _pointerYPosition;
   double _pointerXPosition;
   bool _scrolling = false;
 
+  ScrollController _scrollController;
+
   @override
-  Widget generateWidget(DragAndDropBuilderParameters params) {
+  Widget generateWidget(DragAndDropBuilderParameters params, ScrollController scrollController) {
+    _scrollController = scrollController;
+
     DragAndDropListTarget dragAndDropListTarget = DragAndDropListTarget(
       parameters: params,
       tabID: tabID,

@@ -10,5 +10,5 @@ abstract class DragAndDropPageInterface implements DragAndDropInterface {
 
   List<DragAndDropListInterface> get children;
 
-  Widget generateWidget(DragAndDropBuilderParameters params);
+  Widget generateWidget(DragAndDropBuilderParameters params, ScrollController scrollController);
 }
