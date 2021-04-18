@@ -308,6 +308,8 @@ class DragAndDropLists extends StatefulWidget {
 
   final OnPageChange onPageChange;
 
+  final ScrollPhysics scrollPhysics;
+
   DragAndDropLists({
     this.children,
     this.onItemReorder,
@@ -363,6 +365,7 @@ class DragAndDropLists extends StatefulWidget {
     this.screenWidth = 400,
     this.pageController,
     this.onPageChange,
+    this.scrollPhysics,
     Key key,
   }) : super(key: key) {
     if (listGhost == null &&
@@ -468,6 +471,7 @@ class DragAndDropListsState extends State<DragAndDropLists> {
     if (widget.pages) {
       return PageView.builder(
         controller: _pageController,
+        physics: widget.scrollPhysics ?? BouncingScrollPhysics(),
         itemCount: widget.children.length,
         itemBuilder: (context, index) {
           return DragAndDropPageWrapper(
@@ -479,6 +483,7 @@ class DragAndDropListsState extends State<DragAndDropLists> {
     } else {
       return ListView.builder(
         scrollDirection: Axis.horizontal,
+        physics: widget.scrollPhysics ?? BouncingScrollPhysics(),
         controller: _mainScrollController,
         itemCount: widget.children.length,
         itemBuilder: (context, index) {
