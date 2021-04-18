@@ -12,7 +12,7 @@ enum DragHandleVerticalAlignment {
   center,
   bottom,
 }
-typedef void OnPointerMove(PointerMoveEvent event);
+typedef void OnPointerMove(PointerMoveEvent event, BuildContext context);
 typedef void OnPointerUp(PointerUpEvent event);
 typedef void OnPointerDown(PointerDownEvent event);
 typedef void OnItemReordered(
@@ -74,6 +74,7 @@ class DragAndDropBuilderParameters extends Equatable {
   final bool disableScrolling;
   final InternalOnListDropOnLastTarget internalOnListDropOnLastTarget;
   final OnPageChange onPageChange;
+  final List<ScrollController> listControllers;
 
   DragAndDropBuilderParameters({
     this.onPointerMove,
@@ -116,6 +117,7 @@ class DragAndDropBuilderParameters extends Equatable {
     this.disableScrolling = false,
     @required this.internalOnListDropOnLastTarget,
     @required this.onPageChange,
+    @required this.listControllers,
   });
 
   @override
@@ -161,6 +163,7 @@ class DragAndDropBuilderParameters extends Equatable {
       disableScrolling,
       internalOnListDropOnLastTarget,
       onPageChange,
+      listControllers,
     ];
   }
 }
