@@ -200,7 +200,7 @@ class _DragAndDropItemWrapper extends State<DragAndDropItemWrapper>
               ),
               Listener(
                 child: draggable,
-                onPointerMove: _onPointerMove,
+                onPointerMove: (value) => _onPointerMove(value, context),
                 onPointerDown: widget.parameters.onPointerDown,
                 onPointerUp: widget.parameters.onPointerUp,
               ),
@@ -225,7 +225,7 @@ class _DragAndDropItemWrapper extends State<DragAndDropItemWrapper>
               ),
               Listener(
                 child: draggable,
-                onPointerMove: _onPointerMove,
+                onPointerMove: (value) => _onPointerMove(value, context),
                 onPointerDown: widget.parameters.onPointerDown,
                 onPointerUp: widget.parameters.onPointerUp,
               ),
@@ -308,7 +308,7 @@ class _DragAndDropItemWrapper extends State<DragAndDropItemWrapper>
     }
   }
 
-  void _onPointerMove(PointerMoveEvent event) {
-    if (_dragging) widget.parameters.onPointerMove(event);
+  void _onPointerMove(PointerMoveEvent event, BuildContext context) {
+    if (_dragging) widget.parameters.onPointerMove(event, context);
   }
 }

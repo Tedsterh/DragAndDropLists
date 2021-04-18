@@ -56,6 +56,9 @@ class _HorizontalExample extends State<HorizontalExample> {
           onItemReorder: _onItemReorder,
           listWidth: 400,
           onListReorder: _onListReorder,
+          pageController: PageController(
+            keepPage: true,
+          ),
           listDecoration: BoxDecoration(
             color: Colors.grey[200],
             borderRadius: BorderRadius.all(Radius.circular(7.0)),
@@ -94,6 +97,7 @@ class _HorizontalExample extends State<HorizontalExample> {
     var innerList = _lists[pageIndex].children[outerIndex];
     return DragAndDropList(
       listID: innerList.name,
+      isSideways: true,
       header: Row(
         children: <Widget>[
           Expanded(

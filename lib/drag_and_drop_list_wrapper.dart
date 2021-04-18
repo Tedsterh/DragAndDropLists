@@ -145,7 +145,7 @@ class _DragAndDropListWrapper extends State<DragAndDropListWrapper>
       ),
       Listener(
         child: draggable,
-        onPointerMove: _onPointerMove,
+        onPointerMove: (value) => _onPointerMove(value, context),
         onPointerDown: widget.parameters.onPointerDown,
         onPointerUp: widget.parameters.onPointerUp,
       ),
@@ -321,7 +321,7 @@ class _DragAndDropListWrapper extends State<DragAndDropListWrapper>
     }
   }
 
-  void _onPointerMove(PointerMoveEvent event) {
-    if (_dragging) widget.parameters.onPointerMove(event);
+  void _onPointerMove(PointerMoveEvent event, BuildContext context) {
+    if (_dragging) widget.parameters.onPointerMove(event, context);
   }
 }
