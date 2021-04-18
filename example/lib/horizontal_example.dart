@@ -94,7 +94,6 @@ class _HorizontalExample extends State<HorizontalExample> {
     var innerList = _lists[pageIndex].children[outerIndex];
     return DragAndDropList(
       listID: innerList.name,
-      isSideways: true,
       header: Row(
         children: <Widget>[
           Expanded(
@@ -159,7 +158,6 @@ class _HorizontalExample extends State<HorizontalExample> {
   }
 
   _onItemReorder(String itemID, int oldItemIndex, int oldListIndex, String oldListID, int oldPageIndex, String oldPageID, int newItemIndex, int newListIndex, String newListID, int newPageIndex, String newPageID) {
-    print("$itemID $oldListID $oldPageID $newListID $newPageID");
     setState(() {
       var movedItem = _lists[oldPageIndex].children[oldListIndex].children.removeAt(oldItemIndex);
       _lists[newPageIndex].children[newListIndex].children.insert(newItemIndex, movedItem);
@@ -167,7 +165,6 @@ class _HorizontalExample extends State<HorizontalExample> {
   }
 
   _onListReorder(String listID, int oldListIndex, int oldPageIndex, String oldPageID, int newListIndex, int newPageIndex, String newPageID) {
-    print("$listID, $oldPageID, $newPageID");
     setState(() {
       var movedList = _lists[oldPageIndex].children.removeAt(oldListIndex);
       _lists[newPageIndex].children.insert(newListIndex, movedList);
