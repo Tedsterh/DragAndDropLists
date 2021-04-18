@@ -401,8 +401,6 @@ class DragAndDropListsState extends State<DragAndDropLists> {
   PageController _pageController;
   ScrollController _mainScrollController;
 
-  List<ScrollController> _controllers = <ScrollController>[];
-
   @override
   void initState() {
 
@@ -423,8 +421,6 @@ class DragAndDropListsState extends State<DragAndDropLists> {
 
   @override
   Widget build(BuildContext context) {
-    _controllers = List.generate(widget.children.length, (index) => ScrollController());
-
     var parameters = DragAndDropBuilderParameters(
       listGhost: widget.listGhost,
       listGhostOpacity: widget.listGhostOpacity,
@@ -466,7 +462,6 @@ class DragAndDropListsState extends State<DragAndDropLists> {
       disableScrolling: widget.disableScrolling,
       internalOnListDropOnLastTarget: _internalOnListDropOnLastTarget,
       onPageChange: widget.onPageChange,
-      listControllers: _controllers,
     );
 
     if (widget.pages) {
@@ -477,7 +472,6 @@ class DragAndDropListsState extends State<DragAndDropLists> {
           return DragAndDropPageWrapper(
             dragAndDropPageInterface: widget.children[index],
             parameters: parameters,
-            scrollController: _controllers[index],
           );
         },
       );
@@ -492,7 +486,6 @@ class DragAndDropListsState extends State<DragAndDropLists> {
             child: DragAndDropPageWrapper(
               dragAndDropPageInterface: widget.children[index],
               parameters: parameters,
-              scrollController: _controllers[index],
             ),
           );
         },
@@ -747,12 +740,12 @@ class DragAndDropListsState extends State<DragAndDropLists> {
     }
   }
 
-  _onPointerMove(PointerMoveEvent event, BuildContext context) {
+  _onPointerMove(PointerMoveEvent event) {
     if (_pointerDown) {
       _pointerYPosition = event.position.dy;
       _pointerXPosition = event.position.dx;
 
-      _scrollList(context);
+      _scrollList();
     }
   }
 
@@ -766,7 +759,7 @@ class DragAndDropListsState extends State<DragAndDropLists> {
     _pointerDown = false;
   }
 
-  _scrollList(BuildContext context) async {
+  _scrollList() async {
     if (!widget.disableScrolling &&
         !_scrolling &&
         _pointerDown &&
@@ -819,14 +812,6 @@ class DragAndDropListsState extends State<DragAndDropLists> {
         } else if (_pointerXPosition > (right - scrollAreaSize)) {
           moveRight = true;
         }
-      }
-
-      if (newOffset != null && _controllers[_pageController.page.toInt()].hasClients) {
-        _scrolling = true;
-        await _controllers[_pageController.page.toInt()].animateTo(newOffset,
-            duration: Duration(milliseconds: duration), curve: Curves.linear);
-        _scrolling = false;
-        if (_pointerDown) _scrollList(context);
       }
 
       if (moveRight != null) {
