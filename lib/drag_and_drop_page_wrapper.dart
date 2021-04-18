@@ -13,9 +13,18 @@ class DragAndDropPageWrapper extends StatefulWidget {
 }
 
 class _DragAndDropPageWrapperState extends State<DragAndDropPageWrapper> {
+  ScrollController _scrollController;
+
+  @override
+  void initState() { 
+    _scrollController = ScrollController();
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    Widget dragAndDropPageContents = widget.dragAndDropPageInterface.generateWidget(widget.parameters);
+    Widget dragAndDropPageContents = widget.dragAndDropPageInterface.generateWidget(widget.parameters, _scrollController);
     return dragAndDropPageContents;
   }
 }
