@@ -76,6 +76,8 @@ class DragAndDropBuilderParameters extends Equatable {
   final InternalOnListDropOnLastTarget internalOnListDropOnLastTarget;
   final OnPageChange onPageChange;
   final double lastListTargetSize;
+  final double listCacheExtent;
+  final double innerListCacheExtent;
 
   DragAndDropBuilderParameters({
     this.onPointerMove,
@@ -120,6 +122,8 @@ class DragAndDropBuilderParameters extends Equatable {
     @required this.onPageChange,
     this.lastListTargetSize,
     @required this.internalListPadding,
+    @required this.listCacheExtent,
+    @required this.innerListCacheExtent,
   });
 
   @override
