@@ -1,6 +1,4 @@
 import 'dart:math';
-
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -11,7 +9,7 @@ import 'package:drag_and_drop_lists/drag_and_drop_item_target.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_item_wrapper.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_list_interface.dart';
 
-class DragAndDropList extends Equatable implements DragAndDropListInterface {
+class DragAndDropList implements DragAndDropListInterface {
   /// The widget that is displayed at the top of the list.
   final Widget header;
 
@@ -61,7 +59,7 @@ class DragAndDropList extends Equatable implements DragAndDropListInterface {
 
   final bool isLargeWidget;
 
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController;
   bool _pointerRight = false;
   double _pointerYPosition;
   double _pointerXPosition;
@@ -82,7 +80,10 @@ class DragAndDropList extends Equatable implements DragAndDropListInterface {
       this.canDrag = true,
       this.isSmallWidget = false,
       this.isLargeWidget = false,
-      @required this.listID}) {
+      @required this.listID,
+      @required ScrollController scrollController})
+        : assert(scrollController != null),
+          _scrollController = scrollController {
     if (children != null) {
       children.forEach((element) => this.children.add(element));
     }
@@ -365,29 +366,5 @@ class DragAndDropList extends Equatable implements DragAndDropListInterface {
   static Offset localToGlobal(RenderObject object, Offset point,
       {RenderObject ancestor}) {
     return MatrixUtils.transformPoint(object.getTransformTo(ancestor), point);
-  }
-
-  @override
-  List<Object> get props {
-    return [
-      header,
-      isSideways,
-      footer,
-      leftSide,
-      rightSide,
-      contentsWhenEmpty,
-      lastTarget,
-      decoration,
-      verticalAlignment,
-      horizontalAlignment,
-      listID,
-      canDrag,
-      isSmallWidget,
-      isLargeWidget,
-      _pointerRight,
-      _pointerYPosition,
-      _pointerXPosition,
-      _scrolling,
-    ];
   }
 }

@@ -82,6 +82,9 @@ class _HorizontalExample extends State<HorizontalExample> {
     var outerList = _lists[pageIndex];
     return DragAndDropPage(
       tabID: pageIndex.toString(),
+      scrollController: ScrollController(
+        keepScrollOffset: false,
+      ),
       children: List.generate(outerList.children.length,
           (index) => _buildList(pageIndex, index)),
       footer: FloatingActionButton(
@@ -98,6 +101,9 @@ class _HorizontalExample extends State<HorizontalExample> {
     var innerList = _lists[pageIndex].children[outerIndex];
     return DragAndDropList(
       listID: innerList.name,
+      scrollController: ScrollController(
+        keepScrollOffset: false,
+      ),
       isSideways: true,
       header: Row(
         children: <Widget>[
