@@ -59,6 +59,8 @@ class DragAndDropList implements DragAndDropListInterface {
 
   final bool isLargeWidget;
 
+  final ScrollPhysics scrollPhysics;
+
   final ScrollController _scrollController;
   bool _pointerRight = false;
   double _pointerYPosition;
@@ -81,6 +83,7 @@ class DragAndDropList implements DragAndDropListInterface {
       this.isSmallWidget = false,
       this.isLargeWidget = false,
       @required this.listID,
+      this.scrollPhysics,
       @required ScrollController scrollController})
         : assert(scrollController != null),
           _scrollController = scrollController {
@@ -216,7 +219,7 @@ class DragAndDropList implements DragAndDropListInterface {
                     scrollDirection: Axis.horizontal,
                     padding: isLargeWidget || isSmallWidget ? EdgeInsets.all(0) : params.internalListPadding,
                     clipBehavior: Clip.none,
-                    physics: ClampingScrollPhysics(),
+                    physics: scrollPhysics ?? ClampingScrollPhysics(),
                     child: Row(
                       crossAxisAlignment: verticalAlignment,
                       mainAxisSize: MainAxisSize.max,
