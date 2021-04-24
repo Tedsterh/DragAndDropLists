@@ -214,7 +214,7 @@ class DragAndDropList implements DragAndDropListInterface {
                   child: SingleChildScrollView(
                     controller: _scrollController,
                     scrollDirection: Axis.horizontal,
-                    padding: params.internalListPadding,
+                    padding: isLargeWidget || isSmallWidget ? EdgeInsets.all(0) : params.internalListPadding,
                     clipBehavior: Clip.none,
                     physics: ClampingScrollPhysics(),
                     child: Row(
