@@ -28,35 +28,37 @@ class DragAndDropItemTarget extends StatefulWidget {
   State<StatefulWidget> createState() => _DragAndDropItemTarget();
 }
 
-class _DragAndDropItemTarget extends State<DragAndDropItemTarget>
-    with TickerProviderStateMixin {
+class _DragAndDropItemTarget extends State<DragAndDropItemTarget> with TickerProviderStateMixin {
   DragAndDropItem _hoveredDraggable;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        Column(
-          crossAxisAlignment: widget.parameters.verticalAlignment,
-          children: <Widget>[
-            AnimatedSize(
-              duration: Duration(
-                  milliseconds: widget.parameters.itemSizeAnimationDuration),
-              vsync: this,
-              alignment: Alignment.bottomCenter,
-              child: _hoveredDraggable != null
-                  ? Opacity(
-                      opacity: widget.parameters.itemGhostOpacity,
-                      child: widget.parameters.itemGhost ??
-                          _hoveredDraggable.child,
-                    )
-                  : Container(),
-            ),
-            widget.child ??
-                Container(
-                  height: 20,
-                ),
-          ],
+        Padding(
+          padding: widget.parameters.internalListPadding,
+          child: Column(
+            crossAxisAlignment: widget.parameters.verticalAlignment,
+            children: <Widget>[
+              AnimatedSize(
+                duration: Duration(
+                    milliseconds: widget.parameters.itemSizeAnimationDuration),
+                vsync: this,
+                alignment: Alignment.bottomCenter,
+                child: _hoveredDraggable != null
+                    ? Opacity(
+                        opacity: widget.parameters.itemGhostOpacity,
+                        child: widget.parameters.itemGhost ??
+                            _hoveredDraggable.child,
+                      )
+                    : Container(),
+              ),
+              widget.child ??
+                  Container(
+                    height: 20,
+                  ),
+            ],
+          ),
         ),
         Positioned.fill(
           child: DragTarget<DragAndDropItem>(
