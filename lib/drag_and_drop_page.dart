@@ -99,11 +99,11 @@ class DragAndDropPage implements DragAndDropPageInterface {
     }
   }
 
-  ListView _buildListView(DragAndDropBuilderParameters parameters,
-      DragAndDropListTarget dragAndDropListTarget, Widget footer, ScrollController scrollController) {
+  ListView _buildListView(DragAndDropBuilderParameters parameters, DragAndDropListTarget dragAndDropListTarget, Widget footer, ScrollController scrollController) {
     return ListView(
       controller: scrollController,
       addAutomaticKeepAlives: true,
+      cacheExtent: 1000,
       children: _buildOuterList(dragAndDropListTarget, parameters, footer),
     );
   }
