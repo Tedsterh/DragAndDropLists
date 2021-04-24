@@ -60,6 +60,7 @@ class _HorizontalExample extends State<HorizontalExample> {
           pageController: PageController(
             keepPage: true,
           ),
+          internalListPadding: EdgeInsets.all(0),
           listDecoration: BoxDecoration(
             color: Colors.grey[200],
             borderRadius: BorderRadius.all(Radius.circular(7.0)),
@@ -104,7 +105,7 @@ class _HorizontalExample extends State<HorizontalExample> {
       scrollController: ScrollController(
         keepScrollOffset: false,
       ),
-      isSideways: true,
+      // isSideways: true,
       header: Row(
         children: <Widget>[
           Expanded(

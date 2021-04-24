@@ -95,13 +95,10 @@ class DragAndDropList implements DragAndDropListInterface {
     if (header != null) {
       contents.add(Flexible(child: header));
     }
-    Widget intrinsicHeight = IntrinsicHeight(
-      child: Row(
-        mainAxisAlignment: horizontalAlignment,
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: _generateDragAndDropListInnerContents(params),
-      ),
+    Widget intrinsicHeight = Row(
+      mainAxisAlignment: horizontalAlignment,
+      mainAxisSize: MainAxisSize.min,
+      children: _generateDragAndDropListInnerContents(params),
     );
     if (isSideways) {
       intrinsicHeight = Container(
