@@ -36,29 +36,7 @@ class _DragAndDropItemTarget extends State<DragAndDropItemTarget>
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        if (widget.isSideways) Row(
-          // crossAxisAlignment: widget.parameters.verticalAlignment,
-          children: <Widget>[
-            AnimatedSize(
-              duration: Duration(
-                  milliseconds: widget.parameters.itemSizeAnimationDuration),
-              vsync: this,
-              alignment: Alignment.centerRight,
-              child: _hoveredDraggable != null
-                  ? Opacity(
-                      opacity: widget.parameters.itemGhostOpacity,
-                      child: widget.parameters.itemGhost ??
-                          _hoveredDraggable.child,
-                    )
-                  : Container(),
-            ),
-            widget.child ??
-                Container(
-                  width: 20,
-                ),
-          ],
-        ), 
-        if (!widget.isSideways) Column(
+        Column(
           crossAxisAlignment: widget.parameters.verticalAlignment,
           children: <Widget>[
             AnimatedSize(
