@@ -104,6 +104,7 @@ class DragAndDropPage implements DragAndDropPageInterface {
       controller: scrollController,
       addAutomaticKeepAlives: true,
       cacheExtent: 1000,
+      padding: parameters.listPadding,
       children: _buildOuterList(dragAndDropListTarget, parameters, footer),
     );
   }
