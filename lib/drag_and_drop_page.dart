@@ -106,7 +106,7 @@ class DragAndDropPage implements DragAndDropPageInterface {
     return Column(
       children: [
         header ?? Container(),
-        Expanded(
+        Flexible(
           child: ListView(
             controller: scrollController,
             addAutomaticKeepAlives: true,
