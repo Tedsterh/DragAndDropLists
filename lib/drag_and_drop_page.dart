@@ -26,6 +26,9 @@ export 'package:drag_and_drop_lists/drag_and_drop_page_wrapper.dart';
 class DragAndDropPage implements DragAndDropPageInterface {
   /// The child elements that will be contained in this list.
   /// It is possible to not provide any children when an empty list is desired.
+  /// The widget that is displayed at the top of the list.
+  final Widget header;
+
   final Widget footer;
 
   final String tabID;
@@ -35,7 +38,7 @@ class DragAndDropPage implements DragAndDropPageInterface {
   ///
   final List<DragAndDropListInterface> children = <DragAndDropListInterface>[];
 
-  DragAndDropPage({List<DragAndDropListInterface> children, this.footer, @required this.tabID, @required ScrollController scrollController})
+  DragAndDropPage({List<DragAndDropListInterface> children, this.footer, this.header, @required this.tabID, @required ScrollController scrollController})
     : assert(scrollController != null),
       _scrollController = scrollController {
     if (children != null) {
@@ -99,13 +102,21 @@ class DragAndDropPage implements DragAndDropPageInterface {
     }
   }
 
-  ListView _buildListView(DragAndDropBuilderParameters parameters, DragAndDropListTarget dragAndDropListTarget, Widget footer, ScrollController scrollController) {
-    return ListView(
-      controller: scrollController,
-      addAutomaticKeepAlives: true,
-      cacheExtent: 1000,
-      padding: parameters.listPadding,
-      children: _buildOuterList(dragAndDropListTarget, parameters, footer),
+  Column _buildListView(DragAndDropBuilderParameters parameters, DragAndDropListTarget dragAndDropListTarget, Widget footer, ScrollController scrollController) {
+    return Column(
+      children: [
+        header ?? Container(),
+        Expanded(
+          child: ListView(
+            controller: scrollController,
+            addAutomaticKeepAlives: true,
+            cacheExtent: 1000,
+            shrinkWrap: true,
+            padding: parameters.listPadding,
+            children: _buildOuterList(dragAndDropListTarget, parameters, footer),
+          ),
+        ),
+      ],
     );
   }
 
