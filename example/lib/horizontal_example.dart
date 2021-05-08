@@ -93,11 +93,11 @@ class _HorizontalExample extends State<HorizontalExample> {
         decoration: BoxDecoration(
           border: Border(
             top: BorderSide(
-              color: Colors.black38,
+              color: Colors.black12,
               width: 2,
             ),
             bottom: BorderSide(
-              color: Colors.black38,
+              color: Colors.black12,
               width: 2,
             ),
           ),
