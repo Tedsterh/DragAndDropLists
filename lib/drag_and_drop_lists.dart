@@ -501,7 +501,7 @@ class DragAndDropListsState extends State<DragAndDropLists> {
           if (widget.listViewDivider) {
             return Container(
               width: 1,
-              color: Colors.black38,
+              color: Colors.black12,
             );
           }
           return Container();
