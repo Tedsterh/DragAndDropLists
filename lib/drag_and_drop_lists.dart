@@ -183,6 +183,8 @@ class DragAndDropLists extends StatefulWidget {
   /// Length of animation for the change in an item size when displaying the [itemGhost].
   final int itemSizeAnimationDurationMilliseconds;
 
+  final bool listViewDivider;
+
   /// If true, drag an item after doing a long press. If false, drag immediately.
   final bool itemDragOnLongPress;
 
@@ -375,6 +377,7 @@ class DragAndDropLists extends StatefulWidget {
     this.internalListPadding,
     this.listCacheExtent,
     this.innerListCacheExtent,
+    this.listViewDivider = false,
     Key key,
   }) : super(key: key) {
     if (listGhost == null &&
@@ -493,7 +496,16 @@ class DragAndDropListsState extends State<DragAndDropLists> {
         },
       );
     } else {
-      return ListView.builder(
+      return ListView.separated(
+        separatorBuilder: (context, index) {
+          if (widget.listViewDivider) {
+            return Container(
+              width: 1,
+              color: Colors.black38,
+            );
+          }
+          return Container();
+        },
         scrollDirection: Axis.horizontal,
         physics: widget.scrollPhysics ?? BouncingScrollPhysics(),
         controller: _mainScrollController,

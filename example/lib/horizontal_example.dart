@@ -74,6 +74,9 @@ class _HorizontalExample extends State<HorizontalExample> {
             ],
           ),
           listPadding: EdgeInsets.all(8.0),
+          pages: false,
+          screenWidth: 400,
+          listViewDivider: true,
         ),
       ),
     );
@@ -85,6 +88,26 @@ class _HorizontalExample extends State<HorizontalExample> {
       tabID: pageIndex.toString(),
       scrollController: ScrollController(
         keepScrollOffset: false,
+      ),
+      header: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              color: Colors.black38,
+              width: 2,
+            ),
+            bottom: BorderSide(
+              color: Colors.black38,
+              width: 2,
+            ),
+          ),
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Text('Tab ${pageIndex.toString()}'),
+          ),
+        ),
       ),
       children: List.generate(outerList.children.length,
           (index) => _buildList(pageIndex, index)),
@@ -105,7 +128,7 @@ class _HorizontalExample extends State<HorizontalExample> {
       scrollController: ScrollController(
         keepScrollOffset: false,
       ),
-      // isSideways: true,
+      isSideways: true,
       header: Row(
         children: <Widget>[
           Expanded(
