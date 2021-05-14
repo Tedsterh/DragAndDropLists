@@ -45,40 +45,66 @@ class _HorizontalExample extends State<HorizontalExample> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Horizontal'),
-      ),
-      drawer: NavigationDrawer(),
-      body: Container(
-        child: DragAndDropLists(
-          children: List.generate(_lists.length, (index) => _buildPage(index)),
-          onItemReorder: _onItemReorder,
-          lastListTargetSize: 50,
-          listWidth: 400,
-          onListReorder: _onListReorder,
-          pageController: PageController(
-            keepPage: true,
-          ),
-          internalListPadding: EdgeInsets.all(0),
-          listDecoration: BoxDecoration(
-            color: Colors.grey[200],
-            borderRadius: BorderRadius.all(Radius.circular(7.0)),
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                color: Colors.black45,
-                spreadRadius: 3.0,
-                blurRadius: 6.0,
-                offset: Offset(2, 3),
+    return Stack(
+      children: [
+        Container(
+          child: Scaffold(
+            appBar: AppBar(
+              title: Text('Horizontal'),
+            ),
+            endDrawer: NavigationDrawer(),
+            body: Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: DragAndDropLists(
+                      children: List.generate(_lists.length, (index) => _buildPage(index)),
+                      onItemReorder: _onItemReorder,
+                      listWidth: 400,
+                      onListReorder: _onListReorder,
+                      pageController: PageController(
+                        keepPage: true,
+                      ),
+                      listDecoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.all(Radius.circular(7.0)),
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                            color: Colors.black45,
+                            spreadRadius: 3.0,
+                            blurRadius: 6.0,
+                            offset: Offset(2, 3),
+                          ),
+                        ],
+                      ),
+                      pages: false,
+                      screenWidth: 400,
+                      listViewDivider: true,
+                      listDraggingWidth: 400,
+                      internalListPadding: EdgeInsets.only(
+                        left: (25) /
+                            2,
+                        right: (25) /
+                            2,
+                      ),
+                      listPadding: EdgeInsets.only(
+                        top: (25) /
+                            4,
+                      ),
+                      lastListTargetSize: 50,
+                      horizontalAlignment: MainAxisAlignment.start,
+                      scrollPhysics: ClampingScrollPhysics(),
+                      contentsWhenEmpty: Container(),
+                      lastItemTargetHeight: 10,
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-          listPadding: EdgeInsets.all(8.0),
-          pages: false,
-          screenWidth: 400,
-          listViewDivider: true,
         ),
-      ),
+      ],
     );
   }
 
