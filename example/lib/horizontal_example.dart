@@ -154,7 +154,7 @@ class _HorizontalExample extends State<HorizontalExample> {
       scrollController: ScrollController(
         keepScrollOffset: false,
       ),
-      isSideways: true,
+      isSideways: (int.tryParse(innerList.name) % 2) == 0,
       header: Row(
         children: <Widget>[
           Expanded(
