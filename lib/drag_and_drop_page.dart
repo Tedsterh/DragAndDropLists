@@ -103,39 +103,34 @@ class DragAndDropPage implements DragAndDropPageInterface {
   }
 
   Column _buildListView(DragAndDropBuilderParameters parameters, DragAndDropListTarget dragAndDropListTarget, Widget footer, ScrollController scrollController) {
+    int count = _calculateChildrenCount(false);
     return Column(
       children: [
         header ?? Container(),
         Flexible(
-          child: ListView(
+          child: ListView.builder(
             controller: scrollController,
             addAutomaticKeepAlives: true,
             cacheExtent: 1000,
             shrinkWrap: true,
             padding: parameters.listPadding,
-            children: _buildOuterList(dragAndDropListTarget, parameters, footer),
+            itemCount: count,
+            itemBuilder: (context, index) {
+              if (index == count) {
+                return footer ?? Container();
+              }
+              if (index == count + 1) {
+                return Container(
+                  height: 100,
+                );
+              }
+              return _buildInnerList(index, count,
+                  dragAndDropListTarget, false, parameters);
+            },
           ),
         ),
       ],
     );
-  }
-
-  List<Widget> _buildOuterList(DragAndDropListTarget dragAndDropListTarget,
-      DragAndDropBuilderParameters parameters, Widget footer) {
-    int childrenCount = _calculateChildrenCount(false);
-
-    return List.generate(childrenCount + 2, (index) {
-      if (index == childrenCount) {
-        return footer ?? Container();
-      }
-      if (index == childrenCount + 1) {
-        return Container(
-          height: 100,
-        );
-      }
-      return _buildInnerList(
-          index, childrenCount, dragAndDropListTarget, false, parameters);
-    });
   }
 
   int _calculateChildrenCount(bool includeSeparators) {
