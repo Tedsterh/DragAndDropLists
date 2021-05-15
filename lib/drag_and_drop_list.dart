@@ -208,27 +208,27 @@ class DragAndDropList implements DragAndDropListInterface {
       if (isSideways) {
         contents.add(
           Expanded(
-            child: Builder(
-              builder: (context) {
-                return Listener(
-                  onPointerMove: (event) => _onPointerMove(event, context),
-                  onPointerDown: _onPointerRight,
-                  onPointerUp: _onPointerLeft,
-                  child: SingleChildScrollView(
-                    controller: _scrollController,
-                    scrollDirection: Axis.horizontal,
-                    padding: isLargeWidget || isSmallWidget ? EdgeInsets.all(0) : params.internalListPadding,
-                    clipBehavior: Clip.none,
-                    physics: scrollPhysics ?? ClampingScrollPhysics(),
-                    child: Row(
-                      crossAxisAlignment: verticalAlignment,
-                      mainAxisSize: MainAxisSize.max,
-                      children: allChildren,
-                    ),
+            child: Builder(builder: (context) {
+              return Listener(
+                onPointerMove: (event) => _onPointerMove(event, context),
+                onPointerDown: _onPointerRight,
+                onPointerUp: _onPointerLeft,
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  scrollDirection: Axis.horizontal,
+                  padding: isLargeWidget || isSmallWidget
+                      ? EdgeInsets.all(0)
+                      : params.internalListPadding,
+                  clipBehavior: Clip.none,
+                  physics: scrollPhysics ?? ClampingScrollPhysics(),
+                  child: Row(
+                    crossAxisAlignment: verticalAlignment,
+                    mainAxisSize: MainAxisSize.max,
+                    children: allChildren,
                   ),
-                );
-              }
-            ),
+                ),
+              );
+            }),
           ),
         );
       } else {
