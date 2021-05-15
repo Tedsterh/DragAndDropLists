@@ -108,25 +108,30 @@ class DragAndDropPage implements DragAndDropPageInterface {
       children: [
         header ?? Container(),
         Flexible(
-          child: ListView.builder(
+          child: ListView(
             controller: scrollController,
-            addAutomaticKeepAlives: true,
+            padding: EdgeInsets.all(0),
             cacheExtent: 1000,
             shrinkWrap: true,
-            padding: parameters.listPadding,
-            itemCount: count,
-            itemBuilder: (context, index) {
-              if (index == count) {
-                return footer ?? Container();
-              }
-              if (index == count + 1) {
-                return Container(
-                  height: 100,
-                );
-              }
-              return _buildInnerList(index, count,
-                  dragAndDropListTarget, false, parameters);
-            },
+            addAutomaticKeepAlives: true,
+            children: [
+              ListView.builder(
+                addAutomaticKeepAlives: true,
+                cacheExtent: 1000,
+                shrinkWrap: true,
+                padding: parameters.listPadding,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: count,
+                itemBuilder: (context, index) {
+                  return _buildInnerList(index, count,
+                      dragAndDropListTarget, false, parameters);
+                },
+              ),
+              footer ?? Container(),
+              Container(
+                height: 100,
+              ),
+            ],
           ),
         ),
       ],
